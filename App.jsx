@@ -15,6 +15,10 @@ import {
 } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import StatsScreen from './screens/StatsScreen';
+import MealsScreen from './screens/MealsScreen';
+import ProfileScreen from './screens/ProfileScreen';
+import HomeScreen from './screens/HomeScreen';
 
 const Tab = createBottomTabNavigator();
 export default function App(){
@@ -26,7 +30,7 @@ export default function App(){
         }
         <Tab.Screen name="Home" component={HomeScreen}></Tab.Screen>
         <Tab.Screen name="Stats" component={StatsScreen}></Tab.Screen>
-        <Tab.Screen name="Settings" component={SettingsScreen}></Tab.Screen>
+        <Tab.Screen name="Meals" component={MealsScreen}></Tab.Screen>
         <Tab.Screen name="Profile" component={ProfileScreen}></Tab.Screen>
       </Tab.Navigator>
     </NavigationContainer>
@@ -41,35 +45,3 @@ const styles = StyleSheet.create({
     justifyContent:'center',
   },
 });
-
-function HomeScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>HOME</Text>
-    </View>
-  );
-}
-
-function StatsScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>STATS!</Text>
-    </View>
-  );
-}
-
-function SettingsScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Settings!</Text>
-    </View>
-  );
-}
-
-function ProfileScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>PROFILES</Text>
-    </View>
-  );
-}
