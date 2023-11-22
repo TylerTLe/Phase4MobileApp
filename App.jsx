@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import UserInputComponent from './Components/enterInfo';
 
 const Tab = createBottomTabNavigator();
 export default function App(){
@@ -70,6 +71,7 @@ function ProfileScreen() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>PROFILES</Text>
+      <UserInputComponent/>
     </View>
   );
 }
