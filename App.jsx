@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
   },
 });
 
+
 function HomeScreen() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -59,6 +60,7 @@ function StatsScreen() {
   );
 }
 
+//SHould we select units here or in profile
 function SettingsScreen() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
