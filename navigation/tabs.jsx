@@ -3,10 +3,6 @@ import React from 'react';
 import {
   StyleSheet,
   Text,
-  View,
-  Image,
-  TouchableOpacity,
-  Settings,
 } from 'react-native';
 
 import StatsScreen from '../screens/StatsScreen';
