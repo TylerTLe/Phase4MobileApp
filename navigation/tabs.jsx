@@ -1,12 +1,19 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import React from 'react';
-import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Settings,
+} from 'react-native';
 
 import StatsScreen from '../screens/StatsScreen';
-import MealsScreen from '../screens/MealsScreen';
+import SettingsScreen from '../screens/SettingsScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import HomeScreen from '../screens/HomeScreen';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Tab = createBottomTabNavigator();
 
@@ -14,7 +21,7 @@ const Tabs = () => {
   return (
     <Tab.Navigator
       screenOptions={{
-        headerStyle: {backgroundColor: '#4CAF50'},
+        headerStyle: {backgroundColor: '#ffffff'},
         tabBarShowLabel: false,
         tabBarStyle: {
           position: 'absolute',
@@ -32,16 +39,50 @@ const Tabs = () => {
         name="Home"
         component={HomeScreen}
         options={{
+          title: 'Weclome back',
+          headerTitleAlign: 'center',
           tabBarIcon: ({focused}) => (
-            <View
-              style={{alignItems: 'center', justifyContent: 'center'}}>
-              <Icon name="rocket" size={30} color="black" />
-            </View>
+            <Text style={{alignItems: 'center', justifyContent: 'center'}}>
+              <Ionicons name="home" size={30} color="black" />
+            </Text>
           ),
         }}></Tab.Screen>
-      <Tab.Screen name="Stats" component={StatsScreen}></Tab.Screen>
-      <Tab.Screen name="Meals" component={MealsScreen}></Tab.Screen>
-      <Tab.Screen name="Profile" component={ProfileScreen}></Tab.Screen>
+      <Tab.Screen
+        name="Stats"
+        component={StatsScreen}
+        options={{
+          title: 'Daily stats',
+          headerTitleAlign: 'center',
+          tabBarIcon: ({focused}) => (
+            <Text style={{alignItems: 'center', justifyContent: 'center'}}>
+              <Ionicons name="stats-chart" size={30} color="black" />
+            </Text>
+          ),
+        }}></Tab.Screen>
+      <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          title: 'Profile',
+          headerTitleAlign: 'center',
+          tabBarIcon: ({focused}) => (
+            <Text style={{alignItems: 'center', justifyContent: 'center'}}>
+              <Ionicons name="person" size={30} color="black" />
+            </Text>
+          ),
+        }}></Tab.Screen>
+      <Tab.Screen
+        name="Meals"
+        component={SettingsScreen}
+        options={{
+          title: 'Settings',
+          headerTitleAlign: 'center',
+          tabBarIcon: ({focused}) => (
+            <Text style={{alignItems: 'center', justifyContent: 'center'}}>
+              <Ionicons name="settings" size={30} color="black" />
+            </Text>
+          ),
+        }}></Tab.Screen>
     </Tab.Navigator>
   );
 };
