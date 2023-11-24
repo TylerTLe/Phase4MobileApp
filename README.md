@@ -15,9 +15,7 @@ Welcome to the repository for the Calorie Tracking App, an intuitive and user-fr
 This app is built using React Native, ensuring cross-platform compatibility. To set up the project on your local machine, follow these steps:
 
 1. Clone the repository:
-   ``` git clone https://github.com/yourusername/calorie-tracking-app.git
-cd calorie-tracking-app ```
+   ```git clone https://github.com/yourusername/calorie-tracking-app.git cd calorie-tracking-app ```
 2. Install dependencies:
-```npm install
-```
+```npm install```
 
