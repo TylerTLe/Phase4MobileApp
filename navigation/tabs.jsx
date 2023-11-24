@@ -1,9 +1,6 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-} from 'react-native';
+import {StyleSheet, Text} from 'react-native';
 
 import StatsScreen from '../screens/StatsScreen';
 import SettingsScreen from '../screens/SettingsScreen';
@@ -30,8 +27,17 @@ const Tabs = () => {
           height: 90,
           ...styles.shadow,
         },
+        tabBarHideOnKeyboard: true,
       }}>
       <Tab.Screen
+        initialParams={{
+          age: 20,
+          height: 170,
+          weight: 70,
+          gender: 'male',
+          activityLevel: 'sedentary',
+          goal: 'lose_weight',
+        }}
         name="Home"
         component={HomeScreen}
         options={{
@@ -44,6 +50,14 @@ const Tabs = () => {
           ),
         }}></Tab.Screen>
       <Tab.Screen
+        initialParams={{
+          age: 20,
+          height: 170,
+          weight: 70,
+          gender: 'male',
+          activityLevel: 'sedentary',
+          goal: 'gain_muscle',
+        }}
         name="Stats"
         component={StatsScreen}
         options={{
