@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, TextInput, Button, StyleSheet, Alert} from 'react-native';
+import {View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 
 const ProfileScreen = ({navigation}) => {
@@ -95,7 +95,12 @@ const ProfileScreen = ({navigation}) => {
         <Picker.Item label="Maintain Weight" value="maintain_weight" />
       </Picker>
 
-      <Button title="Save Profile" onPress={handleSubmit} />
+      <TouchableOpacity 
+        style={styles.button} 
+        onPress={handleSubmit}
+      >
+        <Text style={styles.buttonText}>Save Profile</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -121,7 +126,23 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     backgroundColor: '#fff',
   },
+  button: {
+    backgroundColor: '#C3F4C5',
+    padding: 15,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 3,
+  },
+  buttonText: {
+    color: '#000', // White color for the text of the button
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
 });
 
 export default ProfileScreen;
-

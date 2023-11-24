@@ -1,41 +1,41 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 
-const DailyCaloriesSummary = ({ goal, food, exercise }) => {
+const DailyCaloriesSummary = ({goal, food, exercise}) => {
   const remaining = goal - food + exercise;
 
   return (
     <View>
       <Text style={styles.headerText}>Daily calories</Text>
-    <View style={styles.summaryContainer}>
-      <View style={styles.caloriesContainer}>
-        <View style={styles.caloriesItem}>
-          <Text style={styles.caloriesValue}>{goal}</Text>
-          <Text style={styles.caloriesLabel}>Goal</Text>
-        </View>
+      <View style={styles.summaryContainer}>
+        <View style={styles.caloriesContainer}>
+          <View style={styles.caloriesItem}>
+            <Text style={styles.caloriesValue}>{goal}</Text>
+            <Text style={styles.caloriesLabel}>Goal</Text>
+          </View>
 
-        <Text style={styles.caloriesText}> - </Text>
+          <Text style={styles.caloriesText}> - </Text>
 
-        <View style={styles.caloriesItem}>
-          <Text style={styles.caloriesValue}>{food}</Text>
-          <Text style={styles.caloriesLabel}>Food</Text>
-        </View>
+          <View style={styles.caloriesItem}>
+            <Text style={styles.caloriesValue}>{food}</Text>
+            <Text style={styles.caloriesLabel}>Food</Text>
+          </View>
 
-        <Text style={styles.caloriesText}> + </Text>
+          <Text style={styles.caloriesText}> + </Text>
 
-        <View style={styles.caloriesItem}>
-          <Text style={styles.caloriesValue}>{exercise}</Text>
-          <Text style={styles.caloriesLabel}>Exercise</Text>
-        </View>
+          <View style={styles.caloriesItem}>
+            <Text style={styles.caloriesValue}>{exercise}</Text>
+            <Text style={styles.caloriesLabel}>Exercise</Text>
+          </View>
 
-        <Text style={styles.caloriesText}> = </Text>
+          <Text style={styles.caloriesText}> = </Text>
 
-        <View style={styles.caloriesItem}>
-          <Text style={styles.caloriesValue}>{remaining}</Text>
-          <Text style={styles.caloriesLabel}>Remaining</Text>
+          <View style={styles.caloriesItem}>
+            <Text style={styles.caloriesValue}>{remaining}</Text>
+            <Text style={styles.caloriesLabel}>Remaining</Text>
+          </View>
         </View>
       </View>
-    </View>
     </View>
   );
 };
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 15,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 5,
@@ -59,8 +59,6 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     marginLeft: 20,
     marginTop: 20,
-
-
   },
   caloriesContainer: {
     flexDirection: 'row',

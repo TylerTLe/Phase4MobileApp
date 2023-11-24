@@ -36,12 +36,12 @@ const Tabs = () => {
           weight: 70,
           gender: 'male',
           activityLevel: 'sedentary',
-          goal: 'lose_weight',
+          goal: 'gain_muscle',
         }}
         name="Home"
         component={HomeScreen}
         options={{
-          title: 'Weclome back',
+          title: 'Welcome back',
           headerTitleAlign: 'center',
           tabBarIcon: ({focused}) => (
             <Text style={{alignItems: 'center', justifyContent: 'center'}}>
