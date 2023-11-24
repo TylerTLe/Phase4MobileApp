@@ -1,8 +1,16 @@
 // MealModal.js
-import React, { useState } from 'react';
-import { View, Modal, TextInput, Button, StyleSheet } from 'react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  Modal,
+  TextInput,
+  Button,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+} from 'react-native';
 
-const MealModal = ({ isVisible, onAddMeal, onClose }) => {
+const MealModal = ({isVisible, onAddMeal, onClose}) => {
   const [mealName, setMealName] = useState('');
   const [mealCalories, setMealCalories] = useState('');
 
@@ -16,7 +24,11 @@ const MealModal = ({ isVisible, onAddMeal, onClose }) => {
   };
 
   return (
-    <Modal visible={isVisible} animationType="slide" transparent onRequestClose={onClose}>
+    <Modal
+      visible={isVisible}
+      animationType="slide"
+      transparent
+      onRequestClose={onClose}>
       <View style={styles.modalOverlay}>
         <View style={styles.modalContent}>
           <TextInput
@@ -33,8 +45,15 @@ const MealModal = ({ isVisible, onAddMeal, onClose }) => {
             keyboardType="numeric"
             style={styles.input}
           />
-          <Button title="Add Meal" onPress={handleAddPress} />
-          <Button title="Close" onPress={onClose} />
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.button} onPress={onClose}>
+              <Text style={styles.buttonText}>Close</Text>
+            </TouchableOpacity>
+            <View style={styles.buttonSpacer} />
+            <TouchableOpacity style={styles.button} onPress={handleAddPress}>
+              <Text style={styles.buttonText}>Add Meal</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </Modal>
@@ -62,6 +81,29 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 10,
     width: '100%',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
+  },
+  button: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#C3F4C5',
+    padding: 10,
+    borderRadius: 5,
+    shadowOpacity: 10,
+    shadowRadius: 10,
+    elevation: 5,
+  },
+  buttonSpacer: {
+    width: 10, // Margin between buttons
+  },
+  buttonText: {
+    fontSize: 14,
+    fontWeight: 'bold',
   },
 });
 
