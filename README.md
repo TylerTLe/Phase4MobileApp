@@ -18,4 +18,6 @@ This app is built using React Native, ensuring cross-platform compatibility. To 
    ```git clone https://github.com/TylerTLe/Phase4MobileApp.git cd Phase4MobileApp ```
 2. Install dependencies:
 ```npm install```
+3. Run application:
+```npx react-native run-android```
 
