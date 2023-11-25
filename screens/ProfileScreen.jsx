@@ -24,13 +24,14 @@ const ProfileScreen = ({navigation}) => {
 
   const handleSubmit = () => {
     if (validateInput()) {
-      navigation.navigate('StatsScreen', {
-        age,
-        height,
-        weight,
-        gender,
-        activityLevel,
-        goal,
+      // Navigate to StatsScreen with the user's profile data
+      navigation.navigate('Stats', {
+        age: parseInt(age, 10),
+        height: parseInt(height, 10),
+        weight: parseInt(weight, 10),
+        gender: gender,
+        activityLevel: activityLevel,
+        goal: goal,
       });
     }
   };
@@ -127,7 +128,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   button: {
-    backgroundColor: '#C3F4C5',
+    backgroundColor: '#10ac84',
     padding: 15,
     borderRadius: 5,
     justifyContent: 'center',

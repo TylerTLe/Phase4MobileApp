@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -10,9 +10,21 @@ import {
 import DailyCaloriesSummary from './StatComponents/DailyCaloriesSummary';
 import MealModal from './StatComponents/MealModal';
 
-const StatsScreen = ({route}) => {
-  const {gender, weight, height, age, activityLevel, goal} = route.params;
-  const [meals, setMeals] = useState({breakfast: [], lunch: [], dinner: []});
+const StatsScreen = ({ route, navigation }) => {
+  // Default parameters in case route.params is undefined
+  const defaultParams = {
+    gender: 'male',
+    weight: 70,
+    height: 170,
+    age: 25,
+    activityLevel: 'sedentary',
+    goal: 'maintain_weight',
+  };
+
+  // Use parameters from route.params or default parameters
+  const { gender, weight, height, age, activityLevel, goal } = route.params || defaultParams;
+
+  const [meals, setMeals] = useState({ breakfast: [], lunch: [], dinner: [] });
   const [modalVisible, setModalVisible] = useState(false);
   const [currentMealType, setCurrentMealType] = useState(null);
 
@@ -53,7 +65,7 @@ const StatsScreen = ({route}) => {
       ...prevMeals,
       [currentMealType]: [
         ...prevMeals[currentMealType],
-        {name: mealName, calories},
+        { name: mealName, calories },
       ],
     }));
   };
@@ -68,13 +80,21 @@ const StatsScreen = ({route}) => {
     setModalVisible(true);
   };
 
+  const navigateToHome = () => {
+    navigation.navigate('Home', {
+      calorieGoal: calorieGoal,
+      totalFoodCalories: totalFoodCalories,
+      remainingCalories: calorieGoal - totalFoodCalories,
+    });
+  };
+
   return (
     <SafeAreaView style={styles.safeContainer}>
       <ScrollView style={styles.container}>
         <DailyCaloriesSummary
           goal={calorieGoal.toFixed(0)}
           food={totalFoodCalories}
-          exercise={0}
+          exercise={0} // You'll need to manage the exercise state if necessary
         />
         {['breakfast', 'lunch', 'dinner'].map(mealType => (
           <View key={mealType} style={styles.mealSection}>
@@ -96,12 +116,12 @@ const StatsScreen = ({route}) => {
         ))}
         <MealModal
           isVisible={modalVisible}
-          onAddMeal={(name, calories) => {
-            addMeal(name, calories);
-            setModalVisible(false);
-          }}
+          onAddMeal={addMeal}
           onClose={() => setModalVisible(false)}
         />
+        <TouchableOpacity onPress={navigateToHome} style={styles.navigateToHomeButton}>
+          <Text style={styles.navigateToHomeButtonText}>Go to Home Screen</Text>
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
@@ -110,7 +130,7 @@ const StatsScreen = ({route}) => {
 const styles = StyleSheet.create({
   safeContainer: {
     flex: 1,
-    backgroundColor: '#f2f2f2', // or your preferred background color
+    backgroundColor: '#f2f2f2',
   },
   container: {
     flex: 1,
@@ -121,7 +141,7 @@ const styles = StyleSheet.create({
     padding: 15,
     margin: 15,
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 6,
     elevation: 3,
@@ -153,7 +173,17 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#000',
   },
-  // Add more styles as needed
+  navigateToHomeButton: {
+    backgroundColor: '#4CAF50',
+    padding: 15,
+    borderRadius: 5,
+    alignItems: 'center',
+    margin: 15,
+  },
+  navigateToHomeButtonText: {
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+  },
 });
 
 export default StatsScreen;
