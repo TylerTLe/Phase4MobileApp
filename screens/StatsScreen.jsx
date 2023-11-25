@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -10,7 +10,7 @@ import {
 import DailyCaloriesSummary from './StatComponents/DailyCaloriesSummary';
 import MealModal from './StatComponents/MealModal';
 
-const StatsScreen = ({ route, navigation }) => {
+const StatsScreen = ({route, navigation}) => {
   // Default parameters in case route.params is undefined
   const defaultParams = {
     gender: 'male',
@@ -22,9 +22,10 @@ const StatsScreen = ({ route, navigation }) => {
   };
 
   // Use parameters from route.params or default parameters
-  const { gender, weight, height, age, activityLevel, goal } = route.params || defaultParams;
+  const {gender, weight, height, age, activityLevel, goal} =
+    route.params || defaultParams;
 
-  const [meals, setMeals] = useState({ breakfast: [], lunch: [], dinner: [] });
+  const [meals, setMeals] = useState({breakfast: [], lunch: [], dinner: []});
   const [modalVisible, setModalVisible] = useState(false);
   const [currentMealType, setCurrentMealType] = useState(null);
 
@@ -65,11 +66,11 @@ const StatsScreen = ({ route, navigation }) => {
       ...prevMeals,
       [currentMealType]: [
         ...prevMeals[currentMealType],
-        { name: mealName, calories },
+        {name: mealName, calories},
       ],
     }));
   };
-  
+
   const totalFoodCalories = Object.values(meals)
     .flat()
     .reduce((acc, meal) => acc + meal.calories, 0);
@@ -84,9 +85,10 @@ const StatsScreen = ({ route, navigation }) => {
     navigation.navigate('Home', {
       calorieGoal: calorieGoal,
       totalFoodCalories: totalFoodCalories,
-      remainingCalories: calorieGoal - totalFoodCalories,
     });
   };
+
+  const caloriesRemaining = calorieGoal - totalFoodCalories;
 
   return (
     <SafeAreaView style={styles.safeContainer}>
@@ -119,7 +121,9 @@ const StatsScreen = ({ route, navigation }) => {
           onAddMeal={addMeal}
           onClose={() => setModalVisible(false)}
         />
-        <TouchableOpacity onPress={navigateToHome} style={styles.navigateToHomeButton}>
+        <TouchableOpacity
+          onPress={navigateToHome}
+          style={styles.navigateToHomeButton}>
           <Text style={styles.navigateToHomeButtonText}>Go to Home Screen</Text>
         </TouchableOpacity>
       </ScrollView>
@@ -141,7 +145,7 @@ const styles = StyleSheet.create({
     padding: 15,
     margin: 15,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.1,
     shadowRadius: 6,
     elevation: 3,
@@ -174,14 +178,14 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   navigateToHomeButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#10ac84',
     padding: 15,
     borderRadius: 5,
     alignItems: 'center',
     margin: 15,
   },
   navigateToHomeButtonText: {
-    color: '#FFFFFF',
+    color: '#000',
     fontWeight: 'bold',
   },
 });

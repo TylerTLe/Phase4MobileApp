@@ -37,7 +37,7 @@ const Tabs = () => {
           title: 'Welcome back',
           headerTitleAlign: 'center',
           tabBarIcon: ({ focused }) => (
-            <Ionicons name={focused ? "home" : "home-outline"} size={30} color={focused ? "#4CAF50" : "black"} />
+            <Ionicons name={focused ? "home" : "home-outline"} size={30} color={focused ? "#10ac84" : "black"} />
           ),
         }}
       />
@@ -48,7 +48,7 @@ const Tabs = () => {
           title: 'Daily stats',
           headerTitleAlign: 'center',
           tabBarIcon: ({ focused }) => (
-            <Ionicons name={focused ? "stats-chart" : "stats-chart-outline"} size={30} color={focused ? "#4CAF50" : "black"} />
+            <Ionicons name={focused ? "stats-chart" : "stats-chart-outline"} size={30} color={focused ? "#10ac84" : "black"} />
           ),
         }}
       />
@@ -59,7 +59,7 @@ const Tabs = () => {
           title: 'Profile',
           headerTitleAlign: 'center',
           tabBarIcon: ({ focused }) => (
-            <Ionicons name={focused ? "person" : "person-outline"} size={30} color={focused ? "#4CAF50" : "black"} />
+            <Ionicons name={focused ? "person" : "person-outline"} size={30} color={focused ? "#10ac84" : "black"} />
           ),
         }}
       />
@@ -70,7 +70,7 @@ const Tabs = () => {
           title: 'Settings',
           headerTitleAlign: 'center',
           tabBarIcon: ({ focused }) => (
-            <Ionicons name={focused ? "settings" : "settings-outline"} size={30} color={focused ? "#4CAF50" : "black"} />
+            <Ionicons name={focused ? "settings" : "settings-outline"} size={30} color={focused ? "#10ac84" : "black"} />
           ),
         }}
       />

@@ -4,96 +4,63 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  ScrollView,
   Dimensions,
 } from 'react-native';
-import {LineChart, ProgressChart} from 'react-native-chart-kit';
+import {VictoryPie, VictoryLegend} from 'victory-native';
+import Svg from 'react-native-svg';
 
 const screenWidth = Dimensions.get('window').width;
 
 const HomeScreen = ({route}) => {
-  // Default values are set for initial state when no data is passed
-  const defaultData = {
-    progressData: [0, 0, 0, 1], // Example default data for progress chart
-    weightData: {
-      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'], // Example default labels for weight chart
-      data: [0, 0, 0, 0, 0], // Example default data for weight chart
-    },
+  // Retrieve the data from route parameters or use default values
+  const {calorieGoal, totalFoodCalories} = route.params || {
+    calorieGoal: calorieGoal,
+    totalFoodCalories: totalFoodCalories,
   };
 
-  // Retrieve userData from route parameters or use default data
-  const userData = route.params?.userData || defaultData;
+  // Calculate remaining calories
+  const remainingCalories = calorieGoal - totalFoodCalories - remainingCalories;
 
-  const chartConfig = {
-    backgroundGradientFrom: '#08130D',
-    backgroundGradientTo: '#1E2923',
-    decimalPlaces: 2, // specify the number of decimal places
-    color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
-    labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-    style: {
-      borderRadius: 16,
-      paddingRight: 30, // Add padding to prevent cutting off of text
-    },
-    propsForDots: {
-      r: '6',
-      strokeWidth: '2',
-      stroke: '#ffa726',
-    },
-  };
-
-  const progressChartData = {
-    labels: ['Goal', 'Food', 'Exercise', 'Remaining'],
-    data: userData.progressData,
-  };
-
-  const weightData = {
-    labels: userData.weightData.labels,
-    datasets: [
-      {
-        data: userData.weightData.data,
-        color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`,
-        strokeWidth: 2,
-      },
-    ],
-  };
-
-  // Placeholder for a function to log workout calories
-  const handleLogWorkout = () => {
-    // Placeholder functionality - to be implemented
-  };
+  // Chart data
+  const data = [
+    {x: 'Base Goal', y: parseInt(calorieGoal) || 1 },
+    {x: 'Food', y: totalFoodCalories || 1},
+    {x: 'Exercise', y: 100}, // TODO: Replace with actual exercise calories
+    {x: 'Remaining', y: totalFoodCalories - remainingCalories || 1},
+  ];
+  // Colors for each section in the chart
+  const colorScale = ['#64B5F6', '#FFB74D', '#4DB6AC', '#e0e0e0'];
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.chartContainer}>
-        <ProgressChart
-          data={progressChartData}
-          width={screenWidth - 40} // Adjust the width by subtracting the horizontal padding
-          height={220}
-          strokeWidth={16}
-          radius={32}
-          chartConfig={chartConfig}
-          hideLegend={false}
-          style={styles.chart}
+    <View style={styles.container}>
+      <Svg width={screenWidth - 40} height={300}>
+        <VictoryPie
+          standalone={false} // Android workaround: use with nested SVG
+          data={data}
+          innerRadius={70}
+          width={screenWidth - 40}
+          height={300}
+          colorScale={colorScale}
+          padAngle={({datum}) => 2}
         />
+      </Svg>
+
+      {/* Render the legend separately with labels */}
+      <View style={styles.legend}>
+        {data.map((datum, index) => (
+          <View key={index} style={styles.legendItem}>
+            <View
+              style={[styles.legendIcon, {backgroundColor: colorScale[index]}]}
+            />
+            <Text style={styles.legendLabel}>{`${datum.y} ${datum.x}`}</Text>
+          </View>
+        ))}
       </View>
 
-      <View style={styles.chartContainer}>
-        <LineChart
-          data={weightData}
-          width={screenWidth - 40} // Adjust the width by subtracting the horizontal padding
-          height={256}
-          chartConfig={chartConfig}
-          bezier
-          style={styles.chart}
-        />
-      </View>
-
-      <TouchableOpacity
-        style={styles.logWorkoutButton}
-        onPress={handleLogWorkout}>
+      <TouchableOpacity style={styles.logWorkoutButton} onPress={() => {}}>
         <Text style={styles.logWorkoutButtonText}>Log Workout</Text>
       </TouchableOpacity>
-    </ScrollView>
+    </View>
   );
 };
 
@@ -101,16 +68,29 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingVertical: 20,
+    paddingTop: 20,
+    alignItems: 'center',
   },
-  chartContainer: {
-    alignItems: 'center', // Center chart within the container
-    marginBottom: 20,
+  legend: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    flexWrap: 'wrap', // Allow items to wrap to next line if space is insufficient
+    marginTop: -10, // Adjust this value as needed to bring closer to pie chart
   },
-  chart: {
-    marginVertical: 8,
-    borderRadius: 16,
-    alignSelf: 'center', // Center chart within the container
+  legendItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 10,
+    marginBottom: 10, // Add bottom margin for spacing between lines if wrapped
+  },
+  legendIcon: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    marginRight: 5,
+  },
+  legendLabel: {
+    fontSize: 14,
   },
   logWorkoutButton: {
     backgroundColor: '#10ac84',
@@ -118,6 +98,7 @@ const styles = StyleSheet.create({
     padding: 15,
     marginHorizontal: 20,
     marginTop: 20,
+    width: screenWidth - 40,
     alignItems: 'center',
   },
   logWorkoutButtonText: {
