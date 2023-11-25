@@ -21,3 +21,5 @@ export const retrieveData = async () => {
             console.error('Error retrieving data:', error);
         }
 };
+
+export default dataView = ()=> {var hello = 'hello world'};

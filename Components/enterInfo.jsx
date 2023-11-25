@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Text, View, TextInput, Button, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import { saveData, retrieveData } from './DataViewer';
+//import { saveData, retrieveData } from './DataViewer';
+
+
 
 const UserInputComponent = () => {
   const [heightValue, setHeightValue] = useState('');
@@ -9,6 +11,8 @@ const UserInputComponent = () => {
   const [ageValue, setAgeValue] = useState('');
   const [selectedGender, setSelectedGender] = useState('');
   const [activityLevel, setActivityLevel] = useState('');
+
+  //Assigned the varible here, from the save one if possible
 
   const RMRvalue = 0
   //might want a button to switch between meters and feet and lb and kg
@@ -29,10 +33,10 @@ const UserInputComponent = () => {
     }
 
     //Save using asnyc storage
-    saveData("height", heightValue)
-    saveData("weight", weightValue)
-    saveData("age", ageValue)
-    saveData("gender", selectedGender)
+    //saveData("height", heightValue)
+    //saveData("weight", weightValue)
+    //saveData("age", ageValue)
+    //saveData("gender", selectedGender)
 
     RMRvalue = RMR(weightValue, heightValue, ageValue, selectedGender);
   };
@@ -55,8 +59,6 @@ const UserInputComponent = () => {
         value={weightValue}
         onChangeText={(text) => handleInputChange(text, setWeightValue)}
       />
-
-      
 
       <Text>Age </Text>
       <TextInput

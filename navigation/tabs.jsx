@@ -64,6 +64,7 @@ const Tabs = () => {
           tabBarIcon: ({focused}) => (
             <Text style={{alignItems: 'center', justifyContent: 'center'}}>
               <Ionicons name="person" size={30} color="black" />
+              
             </Text>
           ),
         }}></Tab.Screen>
