@@ -1,5 +1,13 @@
 import React, {useState} from 'react';
-import {View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  StyleSheet,
+  Alert,
+  TouchableOpacity,
+} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import { saveData, retrieveData } from '../Components/DataViewer';
 import { useEffect } from 'react';
@@ -164,10 +172,7 @@ const ProfileScreen = ({navigation}) => {
         <Picker.Item label="Maintain Weight" value="maintain_weight" />
       </Picker>
 
-      <TouchableOpacity 
-        style={styles.button} 
-        onPress={handleSubmit}
-      >
+      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Save Profile</Text>
       </TouchableOpacity>
     </View>
