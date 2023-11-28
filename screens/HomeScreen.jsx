@@ -19,6 +19,7 @@ const HomeScreen = ({ route }) => {
     calorieGoal: 2000,
     totalFoodCalories: 100,
     exerciseCalories: 100,
+    // These are test values, replace them with the real values
   };
 
   const totalCaloriesIncludingExercise = calorieGoal + exerciseCalories;
