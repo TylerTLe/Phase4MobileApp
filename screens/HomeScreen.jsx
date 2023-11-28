@@ -7,6 +7,7 @@ import {
   Dimensions,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import WorkoutModal from './HomeComponents/WorkoutModal'; // Ensure this path is correct
 
 import { saveData, retrieveData } from '../Components/DataViewer';
 
@@ -19,6 +20,7 @@ const HomeScreen = ({route}) => {
   const {calorieGoal, exerciseCalories} = route.params || {
     calorieGoal: 2000,
     exerciseCalories: 100,
+    // These are test values, replace them with the real values
   };
 
   const totalCaloriesIncludingExercise = calorieGoal + exerciseCalories;
@@ -45,14 +47,18 @@ const HomeScreen = ({route}) => {
     (exerciseCalories / totalCaloriesIncludingExercise) * (screenWidth - 40);
   const remainingWidth = screenWidth - 40 - foodWidth - exerciseWidth;
 
+  const handleWorkoutSubmit = (name, calories) => {
+    setWorkoutData([...workoutData, { name, calories }]);
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.subHeader}>Calorie Intake</Text>
 
       <View style={styles.progressBarContainer}>
-        <View style={[styles.progressBarFilled, {width: foodWidth}]} />
-        <View style={[styles.progressBarExercise, {width: exerciseWidth}]} />
-        <View style={[styles.progressBarRemaining, {width: remainingWidth}]} />
+        <View style={[styles.progressBarFilled, { width: foodWidth }]} />
+        <View style={[styles.progressBarExercise, { width: exerciseWidth }]} />
+        <View style={[styles.progressBarRemaining, { width: remainingWidth }]} />
       </View>
 
       <View style={styles.statsContainer}>
@@ -62,8 +68,7 @@ const HomeScreen = ({route}) => {
             size={30}
             color="#BDBDBD"
           />
-          Base Goal:
-          {calorieGoal}
+          Base Goal: {calorieGoal}
         </Text>
         <Text style={styles.statsText}>
           <MaterialCommunityIcons
@@ -78,14 +83,34 @@ const HomeScreen = ({route}) => {
           {exerciseCalories} Calories Burnt
         </Text>
         <Text style={styles.statsText}>
-          Calories Remaining:{' '}
-          {calorieGoal - totalFoodCalories + exerciseCalories} Calories
+          Calories Remaining: {calorieGoal - totalFoodCalories + exerciseCalories} Calories
         </Text>
       </View>
 
-      <TouchableOpacity style={styles.logWorkoutButton} onPress={() => {}}>
+      <TouchableOpacity
+        style={styles.logWorkoutButton}
+        onPress={() => setModalVisible(true)}>
         <Text style={styles.logWorkoutButtonText}>Log Workout</Text>
       </TouchableOpacity>
+
+      {/* Displaying the workout data */}
+      {workoutData.map((workout, index) => (
+        <View key={index} style={styles.workoutInfo}>
+          <Text style={styles.workoutInfoText}>
+            Workout: {workout.name}
+          </Text>
+          <Text style={styles.workoutInfoText}>
+            Calories Burnt: {workout.calories}
+          </Text>
+        </View>
+      ))}
+
+      {/* Workout Modal */}
+      <WorkoutModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        onSubmit={handleWorkoutSubmit}
+      />
     </View>
   );
 };
@@ -94,31 +119,31 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#FFFFFF', // Using white for a clean look
+    backgroundColor: '#FFFFFF',
   },
   subHeader: {
-    fontSize: 20, // Slightly larger for better readability
+    fontSize: 20,
     fontWeight: '600',
-    color: '#212121', // Consistent color scheme for text
+    color: '#212121',
     marginTop: 15,
     textAlign: 'center',
   },
   progressBarContainer: {
     flexDirection: 'row',
-    height: 25, // Thicker progress bar for a modern look
+    height: 25,
     width: screenWidth - 40,
     backgroundColor: '#E0E0E0',
-    borderRadius: 15, // More rounded corners
+    borderRadius: 15,
     marginTop: 20,
     overflow: 'hidden',
-    shadowColor: '#000', // Shadow for depth
-    shadowOffset: {width: 0, height: 2},
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 3.84,
     elevation: 5,
   },
   progressBarFilled: {
-    backgroundColor: '#4CAF50', // Keeping vibrant colors for visual appeal
+    backgroundColor: '#4CAF50',
   },
   progressBarExercise: {
     backgroundColor: '#FFC107',
@@ -129,11 +154,11 @@ const styles = StyleSheet.create({
   statsContainer: {
     marginTop: 10,
     alignItems: 'center',
-    backgroundColor: '#f9f9f9', // Light gray card background
+    backgroundColor: '#f9f9f9',
     padding: 10,
-    borderRadius: 10, // Rounded corners for card
+    borderRadius: 10,
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 1},
+    shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.22,
     shadowRadius: 2.22,
     elevation: 3,
@@ -146,23 +171,36 @@ const styles = StyleSheet.create({
     marginVertical: 4,
   },
   logWorkoutButton: {
-    backgroundColor: '#1E88E5',
-    borderRadius: 25,
+    backgroundColor: '#10ac84',
     padding: 15,
-    marginTop: 30,
-    justifyContent: 'center',
+    borderRadius: 5,
     alignItems: 'center',
-    width: screenWidth - 60,
+    margin: 15,
+  },
+  logWorkoutButtonText: {
+    color: 'black',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  workoutInfo: {
+    marginTop: 20,
+    backgroundColor: '#f9f9f9',
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+    marginHorizontal: 20,
   },
-  logWorkoutButtonText: {
-    color: 'white',
+  workoutInfoText: {
     fontSize: 18,
+    color: '#333',
     fontWeight: 'bold',
+    marginBottom: 5,
   },
 });
 
