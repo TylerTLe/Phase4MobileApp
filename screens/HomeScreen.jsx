@@ -6,55 +6,63 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
-import {VictoryPie, VictoryLegend} from 'victory-native';
-import Svg from 'react-native-svg';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const screenWidth = Dimensions.get('window').width;
 
 const HomeScreen = ({route}) => {
   // Retrieve the data from route parameters or use default values
-  const {calorieGoal, totalFoodCalories} = route.params || {
-    calorieGoal: calorieGoal,
-    totalFoodCalories: totalFoodCalories,
+  const {calorieGoal, totalFoodCalories, exerciseCalories} = route.params || {
+    calorieGoal: 2000,
+    totalFoodCalories: 100,
+    exerciseCalories: 100,
   };
 
-  // Calculate remaining calories
-  const remainingCalories = calorieGoal - totalFoodCalories - remainingCalories;
+  const totalCaloriesIncludingExercise = calorieGoal + exerciseCalories;
 
-  // Chart data
-  const data = [
-    {x: 'Base Goal', y: parseInt(calorieGoal) || 1 },
-    {x: 'Food', y: totalFoodCalories || 1},
-    {x: 'Exercise', y: 100}, // TODO: Replace with actual exercise calories
-    {x: 'Remaining', y: totalFoodCalories - remainingCalories || 1},
-  ];
-  // Colors for each section in the chart
-  const colorScale = ['#64B5F6', '#FFB74D', '#4DB6AC', '#e0e0e0'];
+  // Calculate the widths of the progress bar segments
+  const foodWidth =
+    (totalFoodCalories / totalCaloriesIncludingExercise) * (screenWidth - 40);
+  const exerciseWidth =
+    (exerciseCalories / totalCaloriesIncludingExercise) * (screenWidth - 40);
+  const remainingWidth = screenWidth - 40 - foodWidth - exerciseWidth;
 
   return (
     <View style={styles.container}>
-      <Svg width={screenWidth - 40} height={300}>
-        <VictoryPie
-          standalone={false} // Android workaround: use with nested SVG
-          data={data}
-          innerRadius={70}
-          width={screenWidth - 40}
-          height={300}
-          colorScale={colorScale}
-          padAngle={({datum}) => 2}
-        />
-      </Svg>
+      <Text style={styles.subHeader}>Calorie Intake</Text>
 
-      {/* Render the legend separately with labels */}
-      <View style={styles.legend}>
-        {data.map((datum, index) => (
-          <View key={index} style={styles.legendItem}>
-            <View
-              style={[styles.legendIcon, {backgroundColor: colorScale[index]}]}
-            />
-            <Text style={styles.legendLabel}>{`${datum.y} ${datum.x}`}</Text>
-          </View>
-        ))}
+      <View style={styles.progressBarContainer}>
+        <View style={[styles.progressBarFilled, {width: foodWidth}]} />
+        <View style={[styles.progressBarExercise, {width: exerciseWidth}]} />
+        <View style={[styles.progressBarRemaining, {width: remainingWidth}]} />
+      </View>
+
+      <View style={styles.statsContainer}>
+        <Text style={styles.statsText}>
+          <MaterialCommunityIcons
+            name="flag-variant"
+            size={30}
+            color="#BDBDBD"
+          />
+          Base Goal:
+          {calorieGoal}
+        </Text>
+        <Text style={styles.statsText}>
+          <MaterialCommunityIcons
+            name="food-fork-drink"
+            size={30}
+            color="#4CAF50"
+          />{' '}
+          {totalFoodCalories} kcal
+        </Text>
+        <Text style={styles.statsText}>
+          <MaterialCommunityIcons name="fire" size={30} color="#FFC107" />{' '}
+          {exerciseCalories} Calories Burnt
+        </Text>
+        <Text style={styles.statsText}>
+          Calories Remaining:{' '}
+          {calorieGoal - totalFoodCalories + exerciseCalories} Calories
+        </Text>
       </View>
 
       <TouchableOpacity style={styles.logWorkoutButton} onPress={() => {}}>
@@ -67,43 +75,75 @@ const HomeScreen = ({route}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    paddingTop: 20,
-    alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#FFFFFF', // Using white for a clean look
   },
-  legend: {
+  subHeader: {
+    fontSize: 20, // Slightly larger for better readability
+    fontWeight: '600',
+    color: '#212121', // Consistent color scheme for text
+    marginTop: 15,
+    textAlign: 'center',
+  },
+  progressBarContainer: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    flexWrap: 'wrap', // Allow items to wrap to next line if space is insufficient
-    marginTop: -10, // Adjust this value as needed to bring closer to pie chart
+    height: 25, // Thicker progress bar for a modern look
+    width: screenWidth - 40,
+    backgroundColor: '#E0E0E0',
+    borderRadius: 15, // More rounded corners
+    marginTop: 20,
+    overflow: 'hidden',
+    shadowColor: '#000', // Shadow for depth
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.1,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
-  legendItem: {
-    flexDirection: 'row',
+  progressBarFilled: {
+    backgroundColor: '#4CAF50', // Keeping vibrant colors for visual appeal
+  },
+  progressBarExercise: {
+    backgroundColor: '#FFC107',
+  },
+  progressBarRemaining: {
+    backgroundColor: '#BDBDBD',
+  },
+  statsContainer: {
+    marginTop: 10,
     alignItems: 'center',
-    marginRight: 10,
-    marginBottom: 10, // Add bottom margin for spacing between lines if wrapped
+    backgroundColor: '#f9f9f9', // Light gray card background
+    padding: 10,
+    borderRadius: 10, // Rounded corners for card
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 3,
   },
-  legendIcon: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    marginRight: 5,
-  },
-  legendLabel: {
-    fontSize: 14,
+  statsText: {
+    fontSize: 16,
+    color: '#212121',
+    textAlign: 'center',
+    fontWeight: '500',
+    marginVertical: 4,
   },
   logWorkoutButton: {
-    backgroundColor: '#10ac84',
-    borderRadius: 20,
+    backgroundColor: '#1E88E5',
+    borderRadius: 25,
     padding: 15,
-    marginHorizontal: 20,
-    marginTop: 20,
-    width: screenWidth - 40,
+    marginTop: 30,
+    justifyContent: 'center',
     alignItems: 'center',
+    width: screenWidth - 60,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   logWorkoutButtonText: {
-    color: '#fff',
-    fontSize: 16,
+    color: 'white',
+    fontSize: 18,
     fontWeight: 'bold',
   },
 });

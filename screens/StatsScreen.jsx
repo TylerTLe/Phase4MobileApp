@@ -96,7 +96,7 @@ const StatsScreen = ({route, navigation}) => {
         <DailyCaloriesSummary
           goal={calorieGoal.toFixed(0)}
           food={totalFoodCalories}
-          exercise={0} // You'll need to manage the exercise state if necessary
+          exercise={0} // manage the exercise state if necessary
         />
         {['breakfast', 'lunch', 'dinner'].map(mealType => (
           <View key={mealType} style={styles.mealSection}>
