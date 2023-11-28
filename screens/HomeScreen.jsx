@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -8,17 +8,35 @@ import {
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import { saveData, retrieveData } from '../Components/DataViewer';
+
 const screenWidth = Dimensions.get('window').width;
 
 const HomeScreen = ({route}) => {
   // Retrieve the data from route parameters or use default values
-  const {calorieGoal, totalFoodCalories, exerciseCalories} = route.params || {
+  const [totalFoodCalories, setTotalFoodCalories] = useState(100);
+
+  const {calorieGoal, exerciseCalories} = route.params || {
     calorieGoal: 2000,
-    totalFoodCalories: 100,
     exerciseCalories: 100,
   };
 
   const totalCaloriesIncludingExercise = calorieGoal + exerciseCalories;
+
+  //Use effect may be cauing an error, but is necessary for the function of the program
+
+  useEffect(() => {
+    const retrievingData = async () => {
+      const newCalories = await retrieveData('totalCalories');
+      if(newCalories) setTotalFoodCalories(newCalories)
+    };
+    const intervalId = setInterval(() => {
+      retrievingData();
+    }, 5000);
+    retrievingData();
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   // Calculate the widths of the progress bar segments
   const foodWidth =

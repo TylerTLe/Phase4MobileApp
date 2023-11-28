@@ -10,6 +10,8 @@ import {
 import DailyCaloriesSummary from './StatComponents/DailyCaloriesSummary';
 import MealModal from './StatComponents/MealModal';
 
+import { saveData, retrieveData } from '../Components/DataViewer';
+
 const StatsScreen = ({route, navigation}) => {
   // Default parameters in case route.params is undefined
   const defaultParams = {
@@ -79,6 +81,7 @@ const StatsScreen = ({route, navigation}) => {
   const openMealModal = mealType => {
     setCurrentMealType(mealType);
     setModalVisible(true);
+    
   };
 
   const navigateToHome = () => {

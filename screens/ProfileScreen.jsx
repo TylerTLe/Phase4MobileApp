@@ -6,7 +6,6 @@ import { useEffect } from 'react';
 
 
 const ProfileScreen = ({navigation}) => {
-  const [height, setHeight] = useState('');
 
   const [age, setAge] = useState('');
   const [height, setHeight] = useState('');
@@ -20,6 +19,8 @@ const ProfileScreen = ({navigation}) => {
     if (!age || !height || !weight) {
       Alert.alert('Error', 'Please fill in all fields.');
       return false;
+    }
+  }
 
   useEffect( () => {
     const retrieve = async () => {
@@ -32,12 +33,12 @@ const ProfileScreen = ({navigation}) => {
       const storedGender = await retrieveData('gender');
 
       // Update state with the retrieved data, the if make sure that there is an actual value there, and then updates
-      if (storedHeight) setHeight(storedHeight);
-      if (storedAge) setAge(storedAge);
-      if (storedWeight) setWeight(storedWeight);
-      if (storedActivity) setWeight(storedActivity);
-      if (storedGoal) setWeight(storedGoal);
-      if (storedGender) setWeight(storedGender);
+      if (storedHeight) setHeight(parseInt(storedHeight, 10));
+      if (storedAge) setAge(parseInt(storedAge, 10));
+      if (storedWeight) setWeight(parseInt(storedWeight, 10));
+      if (storedActivity) setActivityLevel(storedActivity);
+      if (storedGoal) setGoal(storedGoal);
+      if (storedGender) setGender(storedGender);
       }catch{
         console.error('Error retrieving data: ', error);
       }
@@ -89,19 +90,22 @@ const ProfileScreen = ({navigation}) => {
       });
     }
 
+
+    //No longer need, flag for termination
     // Display the calculated calories or perform further actions here
     alert(
-      `Your daily calorie needs: ${calculatedCalories.toFixed(2)} calories`,
+      //`Your daily calorie needs: ${calculatedCalories.toFixed(2)} calories`,
+      'Information saved successful'
     );
 
 
-    saveData('height', height)
-    saveData('weight', weight)
-    saveData('age', age)
+    saveData('height', String(height))
+    saveData('weight', String(weight))
+    saveData('age', String(age))
     saveData('goal', goal)
     saveData('activity', activityLevel)
     saveData('gender', gender)
-    saveData('calories', calculatedCalories)
+    //saveData('calories', calculatedCalories)
   };
 
   return (

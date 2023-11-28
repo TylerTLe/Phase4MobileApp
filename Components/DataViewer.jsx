@@ -10,7 +10,7 @@ export const saveData = async (key, value) => {
 };
 
 // Retrieve data
-export const retrieveData = async () => {
+export const retrieveData = async (key) => {
     try {
         const value = await AsyncStorage.getItem(key);
             if (value !== null) {
@@ -21,5 +21,14 @@ export const retrieveData = async () => {
             console.error('Error retrieving data:', error);
         }
 };
+
+export const clearAllData = async () => {
+    try {
+      await AsyncStorage.clear();
+      console.log('All data cleared successfully');
+    } catch (error) {
+      console.error('Error clearing data:', error);
+    }
+  };
 
 export default dataView = ()=> {var hello = 'hello world'};
