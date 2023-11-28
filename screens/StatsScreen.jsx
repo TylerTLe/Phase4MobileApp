@@ -1,7 +1,10 @@
 import React from 'react';
 import {View, Text, Button, StyleSheet} from 'react-native';
+import { retrieveData } from '../Components/DataViewer';
 
 const StatsScreen = ({ navigation })  =>{
+  const calories = retrieveData("calories")
+
     return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <Text>STATS!</Text>

@@ -21,11 +21,17 @@ const ProfileScreen = () => {
       const storedHeight = await retrieveData('height');
       const storedAge = await retrieveData('age');
       const storedWeight = await retrieveData('weight');
+      const storedActivity = await retrieveData('activity');
+      const storedGoal = await retrieveData('goal');
+      const storedGender = await retrieveData('gender');
 
       // Update state with the retrieved data, the if make sure that there is an actual value there, and then updates
       if (storedHeight) setHeight(storedHeight);
       if (storedAge) setAge(storedAge);
       if (storedWeight) setWeight(storedWeight);
+      if (storedActivity) setWeight(storedActivity);
+      if (storedGoal) setWeight(storedGoal);
+      if (storedGender) setWeight(storedGender);
       }catch{
         console.error('Error retrieving data: ', error);
       }
@@ -90,6 +96,7 @@ const ProfileScreen = () => {
     saveData('goal', goal)
     saveData('activity', activityLevel)
     saveData('gender', gender)
+    saveData('calories', calculatedCalories)
   };
 
   return (
