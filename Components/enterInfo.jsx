@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Text, View, TextInput, Button, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-//import { saveData, retrieveData } from './DataViewer';
+import { saveData, retrieveData } from './DataViewer';
+
 
 
 

@@ -41,7 +41,7 @@ const Tabs = () => {
             <Text style={{alignItems: 'center', justifyContent: 'center'}}>
               <Ionicons name="home" size={30} color="black" />
             </Text>
-          ),
+          ), 
         }}></Tab.Screen>
       <Tab.Screen
         name="Stats"

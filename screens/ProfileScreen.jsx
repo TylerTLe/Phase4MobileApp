@@ -2,6 +2,11 @@ import React, {useState} from 'react';
 import {View, Text, TextInput, Button, StyleSheet} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 
+//To save and retrieve basic data
+import { saveData, retrieveData } from '../Components/DataViewer';
+import { useEffect } from 'react';
+
+
 const ProfileScreen = () => {
   const [height, setHeight] = useState('');
   const [age, setAge] = useState('');
@@ -9,6 +14,27 @@ const ProfileScreen = () => {
   const [activityLevel, setActivityLevel] = useState('sedentary');
   const [goal, setGoal] = useState('maintain');
   const [gender, setGender] = useState('female'); // Default to female
+
+  useEffect( () => {
+    const retrieve = async () => {
+      try{
+      const storedHeight = await retrieveData('height');
+      const storedAge = await retrieveData('age');
+      const storedWeight = await retrieveData('weight');
+
+      // Update state with the retrieved data, the if make sure that there is an actual value there, and then updates
+      if (storedHeight) setHeight(storedHeight);
+      if (storedAge) setAge(storedAge);
+      if (storedWeight) setWeight(storedWeight);
+      }catch{
+        console.error('Error retrieving data: ', error);
+      }
+    };
+  
+    retrieve()
+  }, []);
+
+  
 
   const calculateCalories = () => {
     // Convert height from cm to meters
@@ -56,6 +82,14 @@ const ProfileScreen = () => {
     alert(
       `Your daily calorie needs: ${calculatedCalories.toFixed(2)} calories`,
     );
+
+
+    saveData('height', height)
+    saveData('weight', weight)
+    saveData('age', age)
+    saveData('goal', goal)
+    saveData('activity', activityLevel)
+    saveData('gender', gender)
   };
 
   return (
