@@ -36,11 +36,13 @@ const Tabs = () => {
         options={{
           title: 'Welcome back',
           headerTitleAlign: 'center',
+
           tabBarIcon: ({ focused }) => (
             <Ionicons name={focused ? "home" : "home-outline"} size={30} color={focused ? "#10ac84" : "black"} />
           ),
         }}
       />
+
       <Tab.Screen
         name="Stats"
         component={StatsScreen}
@@ -58,8 +60,10 @@ const Tabs = () => {
         options={{
           title: 'Profile',
           headerTitleAlign: 'center',
+
           tabBarIcon: ({ focused }) => (
             <Ionicons name={focused ? "person" : "person-outline"} size={30} color={focused ? "#10ac84" : "black"} />
+
           ),
         }}
       />
