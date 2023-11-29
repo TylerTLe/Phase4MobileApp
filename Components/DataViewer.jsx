@@ -15,6 +15,12 @@ export const retrieveData = async (key) => {
         const value = await AsyncStorage.getItem(key);
             if (value !== null) {
                 console.log('Retrieved data:', value);
+
+                //Attempt to stop data corruption, of false entering
+                if(value == null || value == undefined){
+                    saveData(key, 0)
+                    return 0
+                }
                 return value;
             }
         } catch (error) {

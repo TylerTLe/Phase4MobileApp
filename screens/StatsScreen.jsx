@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -93,13 +93,30 @@ const StatsScreen = ({route, navigation}) => {
 
   const caloriesRemaining = calorieGoal - totalFoodCalories;
 
+  const [burntCalories, setburntCalories] = useState(0);
+
+  useEffect(() => {
+    const retrievingData = async () => {
+      const burntCalories = await retrieveData('burntCalories');
+      if(burntCalories) setburntCalories(parseInt(burntCalories, 10))
+      else setburntCalories(0);//here
+    };
+    const intervalId = setInterval(() => {
+      retrievingData();
+    }, 5000);
+    retrievingData();
+
+    return () => clearInterval(intervalId);
+  }, []);
+
   return (
     <SafeAreaView style={styles.safeContainer}>
+    
       <ScrollView style={styles.container}>
         <DailyCaloriesSummary
           goal={calorieGoal.toFixed(0)}
           food={totalFoodCalories}
-          exercise={0} // manage the exercise state if necessary
+          exercise={burntCalories} // manage the exercise state if necessary
         />
         {['breakfast', 'lunch', 'dinner'].map(mealType => (
           <View key={mealType} style={styles.mealSection}>
@@ -130,6 +147,7 @@ const StatsScreen = ({route, navigation}) => {
           <Text style={styles.navigateToHomeButtonText}>Go to Home Screen</Text>
         </TouchableOpacity>
       </ScrollView>
+              
     </SafeAreaView>
   );
 };

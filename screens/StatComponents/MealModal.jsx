@@ -45,11 +45,8 @@ const MealModal = ({isVisible, onAddMeal, onClose}) => {
       onAddMeal(mealName.trim(), parseInt(mealCalories, 10));
       setMealName('');
       setMealCalories('');
-
-
-      /////
+      //Saves infromation here
       Saving();
-      /////
     }
     onClose();
   };

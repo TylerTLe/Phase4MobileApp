@@ -14,12 +14,14 @@ import { saveData, retrieveData } from '../Components/DataViewer';
 const screenWidth = Dimensions.get('window').width;
 
 const HomeScreen = ({route}) => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [workoutData, setWorkoutData] = useState([]);
+  
+  const [totalFoodCalories, setTotalFoodCalories] = useState(1);
+  const [exerciseCalories, setExerciseCalories] = useState(1)
   // Retrieve the data from route parameters or use default values
-  const [totalFoodCalories, setTotalFoodCalories] = useState(100);
-
-  const {calorieGoal, exerciseCalories} = route.params || {
-    calorieGoal: 2000,
-    exerciseCalories: 100,
+  const {calorieGoal} = route.params || {
+    calorieGoal: 2000
     // These are test values, replace them with the real values
   };
 
@@ -30,12 +32,19 @@ const HomeScreen = ({route}) => {
   useEffect(() => {
     const retrievingData = async () => {
       const newCalories = await retrieveData('totalCalories');
-      if(newCalories) setTotalFoodCalories(newCalories)
+      if(newCalories) setTotalFoodCalories(parseInt(newCalories, 10))
+      else setTotalFoodCalories(0)//here
+    };
+    const retrievingData2 = async () => {
+      const newBurntCalories = await retrieveData('burntCalories');
+      if(newBurntCalories) setExerciseCalories(parseInt(newBurntCalories, 10))
+      else setExerciseCalories(0)//here
     };
     const intervalId = setInterval(() => {
       retrievingData();
     }, 5000);
     retrievingData();
+    retrievingData2()
 
     return () => clearInterval(intervalId);
   }, []);
@@ -53,6 +62,7 @@ const HomeScreen = ({route}) => {
 
   return (
     <View style={styles.container}>
+      
       <Text style={styles.subHeader}>Calorie Intake</Text>
 
       <View style={styles.progressBarContainer}>
@@ -92,7 +102,7 @@ const HomeScreen = ({route}) => {
         onPress={() => setModalVisible(true)}>
         <Text style={styles.logWorkoutButtonText}>Log Workout</Text>
       </TouchableOpacity>
-
+    
       {/* Displaying the workout data */}
       {workoutData.map((workout, index) => (
         <View key={index} style={styles.workoutInfo}>
@@ -104,16 +114,18 @@ const HomeScreen = ({route}) => {
           </Text>
         </View>
       ))}
-
+      
       {/* Workout Modal */}
       <WorkoutModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
         onSubmit={handleWorkoutSubmit}
       />
+      
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
