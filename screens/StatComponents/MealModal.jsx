@@ -4,10 +4,10 @@ import {
   View,
   Modal,
   TextInput,
-  Button,
   StyleSheet,
   TouchableOpacity,
   Text,
+  Alert,
 } from 'react-native';
 
 import { saveData, retrieveData } from '../../Components/DataViewer';
@@ -41,16 +41,18 @@ const MealModal = ({isVisible, onAddMeal, onClose}) => {
   }
 
   const handleAddPress = () => {
-    if (mealName.trim() && mealCalories) {
+    // Check if both mealName and mealCalories are provided
+    if (mealName.trim() && mealCalories.trim()) {
       onAddMeal(mealName.trim(), parseInt(mealCalories, 10));
       setMealName('');
       setMealCalories('');
-      //Saves infromation here
       Saving();
+      onClose();
+    } else {
+      // Show an alert if either field is empty
+      Alert.alert("Error", "Please enter both a meal name and its calories.");
     }
-    onClose();
   };
-
 
   return (
     <Modal
@@ -131,8 +133,9 @@ const styles = StyleSheet.create({
     width: 10, // Margin between buttons
   },
   buttonText: {
-    fontSize: 14,
+    color: 'black',
     fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 

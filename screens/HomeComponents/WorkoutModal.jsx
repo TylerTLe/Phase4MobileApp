@@ -6,22 +6,28 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Alert,
 } from 'react-native';
 import { saveData, retrieveData } from '../../Components/DataViewer';
 
-const WorkoutModal = ({modalVisible, setModalVisible, onSubmit}) => {
+const WorkoutModal = ({modalVisible, setModalVisible, onSubmit, onClose}) => {
   const [workoutName, setWorkoutName] = useState('');
   const [workoutCalories, setWorkoutCalories] = useState('');
 
   const handleSubmit = () => {
-    const calories = parseInt(workoutCalories) || 0;
-    onSubmit(workoutName, calories);
-    setModalVisible(false);
-    setWorkoutName('');
-    setWorkoutCalories('');
-    Saving();
+    // Check if both workoutName and workoutCalories are provided
+    if (workoutName.trim() && workoutCalories.trim()) {
+      const calories = parseInt(workoutCalories) || 0;
+      onSubmit(workoutName, calories);
+      setModalVisible(false);
+      setWorkoutName('');
+      setWorkoutCalories('');
+      Saving();
+    } else {
+      // Show an alert if either field is empty
+      Alert.alert("Error", "Please enter both a workout name and calories burned.");
+    }
   };
-
   const Saving = async () => {
     try {
       // Retrieve and parse the current total calories
@@ -51,9 +57,7 @@ const WorkoutModal = ({modalVisible, setModalVisible, onSubmit}) => {
       animationType="slide"
       transparent={true}
       visible={modalVisible}
-      onRequestClose={() => {
-        setModalVisible(!modalVisible);
-      }}>
+      onRequestClose={onClose}>
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
           <TextInput
@@ -69,9 +73,15 @@ const WorkoutModal = ({modalVisible, setModalVisible, onSubmit}) => {
             value={workoutCalories}
             keyboardType="numeric"
           />
-          <TouchableOpacity style={styles.buttonClose} onPress={handleSubmit}>
+          <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={onClose}>
+              <Text style={styles.textStyle}>Close</Text>
+            </TouchableOpacity>
+            <View style={styles.buttonSpacer} />
+          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
             <Text style={styles.textStyle}>Submit Workout</Text>
           </TouchableOpacity>
+          </View>
         </View>
       </View>
     </Modal>
@@ -107,12 +117,24 @@ const styles = StyleSheet.create({
     padding: 10,
     width: 200,
   },
-  buttonClose: {
-    backgroundColor: '#10ac84',
-    borderRadius: 15,
-    padding: 10,
-    elevation: 2,
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginTop: 10,
+  },
+  button: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#10ac84',
+    padding: 10,
+    borderRadius: 5,
+    shadowOpacity: 10,
+    shadowRadius: 10,
+    elevation: 5,
+  },
+  buttonSpacer: {
+    width: 10, // Margin between buttons
   },
   textStyle: {
     color: 'black',

@@ -91,8 +91,6 @@ const StatsScreen = ({route, navigation}) => {
     });
   };
 
-  const caloriesRemaining = calorieGoal - totalFoodCalories;
-
   const [burntCalories, setburntCalories] = useState(0);
 
   useEffect(() => {
