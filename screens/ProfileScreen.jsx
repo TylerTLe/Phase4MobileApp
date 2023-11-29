@@ -9,8 +9,12 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
+import { saveData, retrieveData } from '../Components/DataViewer';
+import { useEffect } from 'react';
+
 
 const ProfileScreen = ({navigation}) => {
+
   const [age, setAge] = useState('');
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');
@@ -18,10 +22,61 @@ const ProfileScreen = ({navigation}) => {
   const [activityLevel, setActivityLevel] = useState('sedentary');
   const [goal, setGoal] = useState('lose_weight');
 
+
   const validateInput = () => {
     if (!age || !height || !weight) {
       Alert.alert('Error', 'Please fill in all fields.');
       return false;
+    }
+  }
+
+  useEffect( () => {
+    const retrieve = async () => {
+      try{
+      const storedHeight = await retrieveData('height');
+      const storedAge = await retrieveData('age');
+      const storedWeight = await retrieveData('weight');
+      const storedActivity = await retrieveData('activity');
+      const storedGoal = await retrieveData('goal');
+      const storedGender = await retrieveData('gender');
+
+      // Update state with the retrieved data, the if make sure that there is an actual value there, and then updates
+      if (storedHeight) setHeight(parseInt(storedHeight, 10));
+      if (storedAge) setAge(parseInt(storedAge, 10));
+      if (storedWeight) setWeight(parseInt(storedWeight, 10));
+      if (storedActivity) setActivityLevel(storedActivity);
+      if (storedGoal) setGoal(storedGoal);
+      if (storedGender) setGender(storedGender);
+      }catch{
+        console.error('Error retrieving data: ', error);
+      }
+    };
+  
+    retrieve()
+  }, []);
+
+  const calculateCalories = () => {
+    // Convert height from cm to meters
+    const heightInMeters = parseFloat(height) / 100;
+
+    // Perform calorie calculation based on user inputs and gender
+    let bmr;
+    if (gender === 'female') {
+      bmr =
+        655 +
+        9.6 * parseFloat(weight) +
+        1.8 * parseFloat(heightInMeters) -
+        4.7 * parseFloat(age);
+    } else if (gender === 'male') {
+      bmr =
+        66 +
+        13.7 * parseFloat(weight) +
+        5 * parseFloat(heightInMeters) -
+        6.8 * parseFloat(age);
+    } else {
+      // Handle other gender options if needed
+      bmr = 0; // Placeholder value
+
     }
     if (isNaN(age) || isNaN(height) || isNaN(weight)) {
       Alert.alert('Error', 'Age, height, and weight must be numbers.');
@@ -42,6 +97,23 @@ const ProfileScreen = ({navigation}) => {
         goal: goal,
       });
     }
+
+
+    //No longer need, flag for termination
+    // Display the calculated calories or perform further actions here
+    alert(
+      //`Your daily calorie needs: ${calculatedCalories.toFixed(2)} calories`,
+      'Information saved successful'
+    );
+
+
+    saveData('height', String(height))
+    saveData('weight', String(weight))
+    saveData('age', String(age))
+    saveData('goal', goal)
+    saveData('activity', activityLevel)
+    saveData('gender', gender)
+    //saveData('calories', calculatedCalories)
   };
 
   return (

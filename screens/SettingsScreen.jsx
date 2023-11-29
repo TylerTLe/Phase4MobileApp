@@ -1,10 +1,16 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Alert} from 'react-native';
+import { saveData, clearAllData } from '../Components/DataViewer';
 
 const SettingsScreen = () => {
   const handleButtonPress = () => {
     Alert.alert('This button does nothing');
   };
+
+  const clearData = () => {
+    clearAllData()
+    Alert.alert('All infromation cleared');
+  }
 
   return (
     <View style={styles.container}>
@@ -27,10 +33,21 @@ const SettingsScreen = () => {
         <Text style={styles.buttonText}>Export</Text>
       </TouchableOpacity>
 
+      <TouchableOpacity style={styles.option} onPress={clearData}>
+        <Text style={styles.buttonText}>Delete data</Text>
+      </TouchableOpacity>
+
       {/* Add more settings options as needed */}
     </View>
   );
 };
+
+//Experimental delete button, it seems to break the app
+/*
+<TouchableOpacity style={styles.option} onPress={clearData}>
+        <Text style={styles.buttonText}>Delete data</Text>
+      </TouchableOpacity>
+*/
 
 export default SettingsScreen;
 

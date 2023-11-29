@@ -10,18 +10,47 @@ import {
   Text,
 } from 'react-native';
 
+import { saveData, retrieveData } from '../../Components/DataViewer';
+
 const MealModal = ({isVisible, onAddMeal, onClose}) => {
   const [mealName, setMealName] = useState('');
   const [mealCalories, setMealCalories] = useState('');
+
+  const Saving = async () => {
+    try {
+      // Retrieve and parse the current total calories
+      let current = await retrieveData('totalCalories');
+
+      current = parseInt(current, 10);
+      current = isNaN(current) ? 0 : current;
+
+      if (current === null || current === 0) {
+        // If current is null or 0, initialize it with mealCalories
+        saveData('totalCalories', String(parseInt(mealCalories, 10)));
+      } else {
+        // If current is not null, add mealCalories to it
+        const newTotalCalories = String(current + parseInt(mealCalories, 10));
+        saveData('totalCalories', newTotalCalories);
+      }
+    
+      // Retrieve and display the updated total calories
+      const updatedTotalCalories = await retrieveData('totalCalories');
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
 
   const handleAddPress = () => {
     if (mealName.trim() && mealCalories) {
       onAddMeal(mealName.trim(), parseInt(mealCalories, 10));
       setMealName('');
       setMealCalories('');
+      //Saves infromation here
+      Saving();
     }
     onClose();
   };
+
 
   return (
     <Modal

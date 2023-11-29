@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
+import { saveData, retrieveData } from '../../Components/DataViewer';
 
 const WorkoutModal = ({modalVisible, setModalVisible, onSubmit}) => {
   const [workoutName, setWorkoutName] = useState('');
@@ -18,7 +19,32 @@ const WorkoutModal = ({modalVisible, setModalVisible, onSubmit}) => {
     setModalVisible(false);
     setWorkoutName('');
     setWorkoutCalories('');
+    Saving();
   };
+
+  const Saving = async () => {
+    try {
+      // Retrieve and parse the current total calories
+      let current = await retrieveData('burntCalories');
+
+      current = parseInt(current, 10);
+      current = isNaN(current) ? 0 : current;
+
+      if (current === null || current === 0) {
+        // If current is null or 0, initialize it with mealCalories
+        saveData('burntCalories', String(parseInt(workoutCalories, 10)));
+      } else {
+        // If current is not null, add mealCalories to it
+        const newTotalCalories = String(current + parseInt(workoutCalories, 10));
+        saveData('burntCalories', newTotalCalories);
+      }
+    
+      // Retrieve and display the updated total calories
+      const updatedTotalCalories = await retrieveData('burntCalories');
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
 
   return (
     <Modal

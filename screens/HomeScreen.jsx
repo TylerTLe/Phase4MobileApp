@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -9,21 +9,47 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import WorkoutModal from './HomeComponents/WorkoutModal'; // Ensure this path is correct
 
+import { saveData, retrieveData } from '../Components/DataViewer';
+
 const screenWidth = Dimensions.get('window').width;
 
-const HomeScreen = ({ route }) => {
+const HomeScreen = ({route}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [workoutData, setWorkoutData] = useState([]);
-
-  const { calorieGoal, totalFoodCalories, exerciseCalories } = route.params || {
-    calorieGoal: 2000,
-    totalFoodCalories: 100,
-    exerciseCalories: 100,
+  
+  const [totalFoodCalories, setTotalFoodCalories] = useState(1);
+  const [exerciseCalories, setExerciseCalories] = useState(1)
+  // Retrieve the data from route parameters or use default values
+  const {calorieGoal} = route.params || {
+    calorieGoal: 2000
     // These are test values, replace them with the real values
   };
 
   const totalCaloriesIncludingExercise = calorieGoal + exerciseCalories;
 
+  //Use effect may be cauing an error, but is necessary for the function of the program
+
+  useEffect(() => {
+    const retrievingData = async () => {
+      const newCalories = await retrieveData('totalCalories');
+      if(newCalories) setTotalFoodCalories(parseInt(newCalories, 10))
+      else setTotalFoodCalories(0)//here
+    };
+    const retrievingData2 = async () => {
+      const newBurntCalories = await retrieveData('burntCalories');
+      if(newBurntCalories) setExerciseCalories(parseInt(newBurntCalories, 10))
+      else setExerciseCalories(0)//here
+    };
+    const intervalId = setInterval(() => {
+      retrievingData();
+    }, 5000);
+    retrievingData();
+    retrievingData2()
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  // Calculate the widths of the progress bar segments
   const foodWidth =
     (totalFoodCalories / totalCaloriesIncludingExercise) * (screenWidth - 40);
   const exerciseWidth =
@@ -36,6 +62,7 @@ const HomeScreen = ({ route }) => {
 
   return (
     <View style={styles.container}>
+      
       <Text style={styles.subHeader}>Calorie Intake</Text>
 
       <View style={styles.progressBarContainer}>
@@ -75,7 +102,7 @@ const HomeScreen = ({ route }) => {
         onPress={() => setModalVisible(true)}>
         <Text style={styles.logWorkoutButtonText}>Log Workout</Text>
       </TouchableOpacity>
-
+    
       {/* Displaying the workout data */}
       {workoutData.map((workout, index) => (
         <View key={index} style={styles.workoutInfo}>
@@ -87,16 +114,18 @@ const HomeScreen = ({ route }) => {
           </Text>
         </View>
       ))}
-
+      
       {/* Workout Modal */}
       <WorkoutModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
         onSubmit={handleWorkoutSubmit}
       />
+      
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
