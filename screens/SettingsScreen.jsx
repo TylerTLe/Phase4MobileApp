@@ -12,6 +12,14 @@ const SettingsScreen = () => {
     Alert.alert('All infromation cleared');
   }
 
+  const resetData1 = () => {
+    saveData('burntCalories', 0)
+  }
+
+  const resetData2 = () => {
+    saveData('totalCalories', 0)
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Settings</Text>
@@ -31,6 +39,14 @@ const SettingsScreen = () => {
 
       <TouchableOpacity style={styles.option} onPress={handleButtonPress}>
         <Text style={styles.buttonText}>Export</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.option} onPress={resetData2}>
+        <Text style={styles.buttonText}>Clear saved calories</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.option} onPress={resetData1}>
+        <Text style={styles.buttonText}>Clear saved workout</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.option} onPress={clearData}>

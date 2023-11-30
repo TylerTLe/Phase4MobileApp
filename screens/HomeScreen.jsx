@@ -44,7 +44,11 @@ const HomeScreen = ({route}) => {
     };
     const intervalId = setInterval(() => {
       retrievingData();
+      retrievingData2()
     }, 5000);
+    //This clears the calorie information everytime the app restarts 
+    saveData('burntCalories', 0)
+    saveData('totalCalories', 0)
     retrievingData();
     retrievingData2();
 
