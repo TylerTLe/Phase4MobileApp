@@ -17,7 +17,7 @@ const ProfileScreen = ({navigation}) => {
 
   const [age, setAge] = useState('');
   const [height, setHeight] = useState('');
-  var [weight, setWeight] = useState('');
+  const [weight, setWeight] = useState('');
   const [gender, setGender] = useState('male');
   const [activityLevel, setActivityLevel] = useState('sedentary');
   const [goal, setGoal] = useState('lose_weight')
@@ -27,6 +27,7 @@ const ProfileScreen = ({navigation}) => {
       return false;
     }
   }
+
 
   useEffect( () => {
     const retrieve = async () => {
@@ -49,19 +50,40 @@ const ProfileScreen = ({navigation}) => {
         console.error('Error retrieving data: ', error);
       }
     };
+
+    const saveAge = () => {
+      saveData('age', age)
+      console.log(age)
+      //console.log(String(age))
+      //setAge(age)
+    }
+    const saveHeight = () => {
+      saveData('height', String(height))
+      //setHeight(height)
+    }
+    const saveWeight = () => {
+      saveData('weight', String(weight))
+      //setWeight(weight)
+    }
+
     //Every 5 secounds, it will try to save age height and weight
-    const intervalId = setInterval(() => {
+    /*const intervalId = setInterval(() => {
       saveAge();
       saveHeight()
       saveWeight();
+      
+      console.log(retrieveData('weight'))
+      console.log(retrieveData('height'))
+      console.log(retrieveData('age'))
     }, 5000);
-  
+    */
     retrieve()
+    console.log(age)
 
-    return () => clearInterval(intervalId);
+    //return () => clearInterval(intervalId);
   }, []);
 
-  const saveAge = () => {
+  /*const saveAge = () => {
     saveData('age', String(age))
     //setAge(age)
   }
@@ -72,7 +94,7 @@ const ProfileScreen = ({navigation}) => {
   const saveWeight = () => {
     saveData('weight', String(weight))
     //setWeight(weight)
-  }
+  }*/
   const saveGender = (input) => {
     saveData('gender', String(input))
     setGender(input)
@@ -80,6 +102,7 @@ const ProfileScreen = ({navigation}) => {
   const saveActivityLevel = (input) => {
     saveData('activity', String(input))
     setActivityLevel(input)
+
   }
   const saveGoal = (input) => {
     saveData('goal', String(input))
@@ -116,6 +139,7 @@ const ProfileScreen = ({navigation}) => {
     return true;
   };
 
+  
   const handleSubmit = () => {
     if (validateInput()) {
       // Navigate to StatsScreen with the user's profile data
@@ -128,7 +152,7 @@ const ProfileScreen = ({navigation}) => {
         goal: goal,
       });
     }
-
+  
 
     //No longer need, flag for termination
     // Display the calculated calories or perform further actions here
@@ -141,9 +165,9 @@ const ProfileScreen = ({navigation}) => {
     saveData('height', String(height))
     saveData('weight', String(weight))
     saveData('age', String(age))
-    saveData('goal', goal)
-    saveData('activity', activityLevel)
-    saveData('gender', gender)
+    //saveData('goal', goal)
+    //saveData('activity', activityLevel)
+    //saveData('gender', gender)
     //saveData('calories', calculatedCalories)
   };
 
