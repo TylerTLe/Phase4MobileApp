@@ -13,23 +13,22 @@ import { saveData, retrieveData } from '../Components/DataViewer';
 
 const screenWidth = Dimensions.get('window').width;
 
-const HomeScreen = ({route}) => {
+const HomeScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [workoutData, setWorkoutData] = useState([]);
   
   const [totalFoodCalories, setTotalFoodCalories] = useState(1);
   const [exerciseCalories, setExerciseCalories] = useState(1)
   // Retrieve the data from route parameters or use default values
-  const {calorieGoal} = route.params || {
-    calorieGoal: 2000
-    // These are test values, replace them with the real values
-  };
+
+  const [calorieGoal, setCalorieGoal] = useState(2000)
+  // Should I apply the datasaver here as well?
 
   const totalCaloriesIncludingExercise = calorieGoal + exerciseCalories;
 
   //Use effect may be cauing an error, but is necessary for the function of the program
 
-  useEffect(() => {
+  useEffect( async () => {
     const retrievingData = async () => {
       const newCalories = await retrieveData('totalCalories');
       if(newCalories) setTotalFoodCalories(parseInt(newCalories, 10))
@@ -40,9 +39,21 @@ const HomeScreen = ({route}) => {
       if(newBurntCalories) setExerciseCalories(parseInt(newBurntCalories, 10))
       else setExerciseCalories(0)//here
     };
+    const theCalorieGoal = async () => {
+      const theCalorieTarget = await (retrieveData('target'))
+      //if (theCalorieTarget) setCalorieGoal(theCalorieTarget)
+      console.log('target')
+      console.log(theCalorieTarget)
+      console.log(parseInt(theCalorieTarget,10))
+    }
     const intervalId = setInterval(() => {
+      theCalorieGoal()
       retrievingData();
-    }, 5000);
+      retrievingData2()
+    }, 10000);
+    //This clears the calorie information everytime the app restarts 
+    await saveData('burntCalories', 0)
+    await saveData('totalCalories', 0)
     retrievingData();
     retrievingData2()
 
