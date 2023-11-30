@@ -132,9 +132,20 @@ const StatsScreen = ({route, navigation}) => {
       if(burntCalories) setburntCalories(parseInt(burntCalories, 10))
       else setburntCalories(0);//here
     };
+
+    const caloryGoal = async () => {
+      await saveData('target', String(calorieGoal))
+      console.log('try')
+      console.log(String(calorieGoal))
+      const num = await retrieveData('target')
+      console.log('re')
+      console.log(num)
+      console.log(parseInt(num, 10))
+    }
     const intervalId = setInterval(() => {
       retrievingData();
       retrieve();
+      caloryGoal();
     }, 5000);
     retrievingData();
     retrieve();
