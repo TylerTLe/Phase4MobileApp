@@ -20,6 +20,8 @@ const HomeScreen = ({route}) => {
   const [totalFoodCalories, setTotalFoodCalories] = useState(1);
   const [exerciseCalories, setExerciseCalories] = useState(1);
   // Retrieve the data from route parameters or use default values
+
+  // Should I apply the datasaver here as well?
   const {calorieGoal} = route.params || {
     calorieGoal: 2000,
     // These are test values, replace them with the real values

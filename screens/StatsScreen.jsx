@@ -24,6 +24,8 @@ const StatsScreen = ({route, navigation}) => {
   };
 
   // Use parameters from route.params or default parameters
+
+  // Should I apply the datasaver here as well?
   const {gender, weight, height, age, activityLevel, goal} =
     route.params || defaultParams;
 
