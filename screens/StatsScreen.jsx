@@ -26,8 +26,16 @@ const StatsScreen = ({route, navigation}) => {
   // Use parameters from route.params or default parameters
 
   // Should I apply the datasaver here as well?
-  const {gender, weight, height, age, activityLevel, goal} =
-    route.params || defaultParams;
+  //const {gender, weight, height, age, activityLevel, goal} =
+    //route.params || defaultParams;
+
+  //Defining values, and still using default
+  const [age, setAge] = useState(25);
+  const [height, setHeight] = useState(170);   
+  const [weight, setWeight] = useState(70);
+  const [gender, setGender] = useState('male');
+  const [activityLevel, setActivityLevel] = useState('sedentary');
+  const [goal, setGoal] = useState('maintain_weight')
 
   const [meals, setMeals] = useState({breakfast: [], lunch: [], dinner: []});
   const [modalVisible, setModalVisible] = useState(false);
@@ -98,6 +106,27 @@ const StatsScreen = ({route, navigation}) => {
   const [burntCalories, setburntCalories] = useState(0);
 
   useEffect(() => {
+    const retrieve = async () => {
+      try{
+      const storedHeight = await retrieveData('height');
+      const storedAge = await retrieveData('age');
+      const storedWeight = await retrieveData('weight');
+      const storedActivity = await retrieveData('activity');
+      const storedGoal = await retrieveData('goal');
+      const storedGender = await retrieveData('gender');
+
+      // Update state with the retrieved data, the if make sure that there is an actual value there, and then updates
+      if (storedHeight) setHeight(storedHeight);
+      if (storedAge) setAge(storedAge);
+      if (storedWeight) setWeight(storedWeight);
+      if (storedActivity) setActivityLevel(storedActivity);
+      if (storedGoal) setGoal(storedGoal);
+      if (storedGender) setGender(storedGender);
+      }catch{
+        console.error('Error retrieving data: ', error);
+      }
+    };
+
     const retrievingData = async () => {
       const burntCalories = await retrieveData('burntCalories');
       if(burntCalories) setburntCalories(parseInt(burntCalories, 10))
@@ -105,8 +134,10 @@ const StatsScreen = ({route, navigation}) => {
     };
     const intervalId = setInterval(() => {
       retrievingData();
+      retrieve();
     }, 5000);
     retrievingData();
+    retrieve();
 
     return () => clearInterval(intervalId);
   }, []);
