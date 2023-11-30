@@ -105,7 +105,7 @@ const StatsScreen = ({route, navigation}) => {
 
   const [burntCalories, setburntCalories] = useState(0);
 
-  useEffect(() => {
+  useEffect(async() => {
     const retrieve = async () => {
       try{
       const storedHeight = await retrieveData('height');
@@ -147,6 +147,10 @@ const StatsScreen = ({route, navigation}) => {
       retrieve();
       caloryGoal();
     }, 5000);
+
+    await saveData('burntCalories', 0)
+    await saveData('totalCalories', 0)
+
     retrievingData();
     retrieve();
 

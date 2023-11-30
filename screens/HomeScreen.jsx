@@ -17,8 +17,8 @@ const HomeScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [workoutData, setWorkoutData] = useState([]);
   
-  const [totalFoodCalories, setTotalFoodCalories] = useState(1);
-  const [exerciseCalories, setExerciseCalories] = useState(1)
+  const [totalFoodCalories, setTotalFoodCalories] = useState(0);
+  const [exerciseCalories, setExerciseCalories] = useState(0)
   // Retrieve the data from route parameters or use default values
 
   const [calorieGoal, setCalorieGoal] = useState(2000)
