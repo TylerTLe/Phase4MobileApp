@@ -21,3 +21,15 @@ This app is built using React Native, ensuring cross-platform compatibility. To 
 3. Run application:
 ```npx react-native run-android```
 
+## App use
+
+To use the app
+
+1. go to profile page and fill out form and save changes.
+2. Stats and home page will update with calculaions for calories needed.
+3. on stats and home page add workouts and meals.
+4. app will automatically update calories on both pages.
+5. if you want to reset data you can go to settings page and reset data. 
+
+6. 
+
