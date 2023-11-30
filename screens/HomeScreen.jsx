@@ -128,9 +128,9 @@ const HomeScreen = () => {
 
         {/* Workout Modal */}
         <WorkoutModal
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
+          isVisible={modalVisible}
           onSubmit={handleWorkoutSubmit}
+          onClose={() => setModalVisible(false)}
         />
       </ScrollView>
     </SafeAreaView>

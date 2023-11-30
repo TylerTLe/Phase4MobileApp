@@ -6,20 +6,31 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Alert
 } from 'react-native';
-import { saveData, retrieveData } from '../../Components/DataViewer';
+import {saveData, retrieveData} from '../../Components/DataViewer';
 
-const WorkoutModal = ({modalVisible, setModalVisible, onSubmit}) => {
+const WorkoutModal = ({isVisible, onSubmit, onClose}) => {
   const [workoutName, setWorkoutName] = useState('');
   const [workoutCalories, setWorkoutCalories] = useState('');
 
   const handleSubmit = () => {
-    const calories = parseInt(workoutCalories) || 0;
-    onSubmit(workoutName, calories);
-    setModalVisible(false);
-    setWorkoutName('');
-    setWorkoutCalories('');
-    Saving();
+    // Check if both workoutName and workoutCalories are provided
+    if (workoutName.trim() && workoutCalories.trim()) {
+      const calories = parseInt(workoutCalories) || 0;
+      onSubmit(workoutName, calories);
+      setModalVisible(false);
+      setWorkoutName('');
+      setWorkoutCalories('');
+      Saving();
+      onClose();
+    } else {
+      // Show an alert if either field is empty
+      Alert.alert(
+        'Error',
+        'Please enter both a workout name and calories burned.',
+      );
+    }
   };
 
   const Saving = async () => {
@@ -35,25 +46,25 @@ const WorkoutModal = ({modalVisible, setModalVisible, onSubmit}) => {
         saveData('burntCalories', String(parseInt(workoutCalories, 10)));
       } else {
         // If current is not null, add mealCalories to it
-        const newTotalCalories = String(current + parseInt(workoutCalories, 10));
+        const newTotalCalories = String(
+          current + parseInt(workoutCalories, 10),
+        );
         saveData('burntCalories', newTotalCalories);
       }
-    
+
       // Retrieve and display the updated total calories
       const updatedTotalCalories = await retrieveData('burntCalories');
     } catch (error) {
       console.error('Error:', error);
     }
-  }
+  };
 
   return (
     <Modal
+      visible={isVisible}
       animationType="slide"
-      transparent={true}
-      visible={modalVisible}
-      onRequestClose={() => {
-        setModalVisible(!modalVisible);
-      }}>
+      transparent
+      onRequestClose={onClose}>
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
           <TextInput
@@ -69,9 +80,15 @@ const WorkoutModal = ({modalVisible, setModalVisible, onSubmit}) => {
             value={workoutCalories}
             keyboardType="numeric"
           />
-          <TouchableOpacity style={styles.buttonClose} onPress={handleSubmit}>
-            <Text style={styles.textStyle}>Submit Workout</Text>
+           <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.button} onPress={onClose}>
+              <Text style={styles.buttonText}>Close</Text>
+            </TouchableOpacity>
+            <View style={styles.buttonSpacer} />
+          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+            <Text style={styles.buttonText}>Submit Workout</Text>
           </TouchableOpacity>
+          </View>
         </View>
       </View>
     </Modal>
@@ -83,7 +100,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 22,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalView: {
     margin: 20,
@@ -107,17 +124,28 @@ const styles = StyleSheet.create({
     padding: 10,
     width: 200,
   },
-  buttonClose: {
-    backgroundColor: '#10ac84',
-    borderRadius: 15,
-    padding: 10,
-    elevation: 2,
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginTop: 10,
   },
-  textStyle: {
-    color: 'black',
+  button: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#10ac84',
+    padding: 10,
+    borderRadius: 5,
+    shadowOpacity: 10,
+    shadowRadius: 10,
+    elevation: 5,
+  },
+  buttonSpacer: {
+    width: 10, // Margin between buttons
+  },
+  buttonText: {
+    fontSize: 14,
     fontWeight: 'bold',
-    textAlign: 'center',
   },
 });
 

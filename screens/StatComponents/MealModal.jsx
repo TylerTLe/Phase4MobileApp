@@ -4,13 +4,13 @@ import {
   View,
   Modal,
   TextInput,
-  Button,
   StyleSheet,
   TouchableOpacity,
   Text,
+  Alert
 } from 'react-native';
 
-import { saveData, retrieveData } from '../../Components/DataViewer';
+import {saveData, retrieveData} from '../../Components/DataViewer';
 
 const MealModal = ({isVisible, onAddMeal, onClose}) => {
   const [mealName, setMealName] = useState('');
@@ -32,25 +32,27 @@ const MealModal = ({isVisible, onAddMeal, onClose}) => {
         const newTotalCalories = String(current + parseInt(mealCalories, 10));
         saveData('totalCalories', newTotalCalories);
       }
-    
+
       // Retrieve and display the updated total calories
       const updatedTotalCalories = await retrieveData('totalCalories');
     } catch (error) {
       console.error('Error:', error);
     }
-  }
+  };
 
   const handleAddPress = () => {
-    if (mealName.trim() && mealCalories) {
+    // Check if both mealName and mealCalories are provided
+    if (mealName.trim() && mealCalories.trim()) {
       onAddMeal(mealName.trim(), parseInt(mealCalories, 10));
       setMealName('');
       setMealCalories('');
-      //Saves infromation here
       Saving();
+      onClose();
+    } else {
+      // Show an alert if either field is empty
+      Alert.alert('Error', 'Please enter both a meal name and its calories.');
     }
-    onClose();
   };
-
 
   return (
     <Modal
