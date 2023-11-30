@@ -44,6 +44,7 @@ const HomeScreen = ({route}) => {
     };
     const intervalId = setInterval(() => {
       retrievingData();
+      retrievingData2()
     }, 5000);
     retrievingData();
     retrievingData2()

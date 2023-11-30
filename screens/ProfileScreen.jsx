@@ -55,6 +55,12 @@ const ProfileScreen = ({navigation}) => {
     retrieve()
   }, []);
 
+  const saveAge = (age) => {
+    saveData('age', age)
+
+
+  }
+
   const calculateCalories = () => {
     // Convert height from cm to meters
     const heightInMeters = parseFloat(height) / 100;
