@@ -10,7 +10,7 @@ import {
 import DailyCaloriesSummary from './StatComponents/DailyCaloriesSummary';
 import MealModal from './StatComponents/MealModal';
 
-import { saveData, retrieveData } from '../Components/DataViewer';
+import {saveData, retrieveData} from '../Components/DataViewer';
 
 const StatsScreen = ({route, navigation}) => {
   // Default parameters in case route.params is undefined
@@ -27,15 +27,15 @@ const StatsScreen = ({route, navigation}) => {
 
   // Should I apply the datasaver here as well?
   //const {gender, weight, height, age, activityLevel, goal} =
-    //route.params || defaultParams;
+  //route.params || defaultParams;
 
   //Defining values, and still using default
   const [age, setAge] = useState(25);
-  const [height, setHeight] = useState(170);   
+  const [height, setHeight] = useState(170);
   const [weight, setWeight] = useState(70);
   const [gender, setGender] = useState('male');
   const [activityLevel, setActivityLevel] = useState('sedentary');
-  const [goal, setGoal] = useState('maintain_weight')
+  const [goal, setGoal] = useState('maintain_weight');
 
   const [meals, setMeals] = useState({breakfast: [], lunch: [], dinner: []});
   const [modalVisible, setModalVisible] = useState(false);
@@ -91,65 +91,49 @@ const StatsScreen = ({route, navigation}) => {
   const openMealModal = mealType => {
     setCurrentMealType(mealType);
     setModalVisible(true);
-    
   };
-
-  const navigateToHome = () => {
-    navigation.navigate('Home', {
-      calorieGoal: calorieGoal,
-      totalFoodCalories: totalFoodCalories,
-    });
-  };
-
-  const caloriesRemaining = calorieGoal - totalFoodCalories;
 
   const [burntCalories, setburntCalories] = useState(0);
 
-  useEffect(async() => {
+  useEffect(async () => {
     const retrieve = async () => {
-      try{
-      const storedHeight = await retrieveData('height');
-      const storedAge = await retrieveData('age');
-      const storedWeight = await retrieveData('weight');
-      const storedActivity = await retrieveData('activity');
-      const storedGoal = await retrieveData('goal');
-      const storedGender = await retrieveData('gender');
+      try {
+        const storedHeight = await retrieveData('height');
+        const storedAge = await retrieveData('age');
+        const storedWeight = await retrieveData('weight');
+        const storedActivity = await retrieveData('activity');
+        const storedGoal = await retrieveData('goal');
+        const storedGender = await retrieveData('gender');
 
-      // Update state with the retrieved data, the if make sure that there is an actual value there, and then updates
-      if (storedHeight) setHeight(storedHeight);
-      if (storedAge) setAge(storedAge);
-      if (storedWeight) setWeight(storedWeight);
-      if (storedActivity) setActivityLevel(storedActivity);
-      if (storedGoal) setGoal(storedGoal);
-      if (storedGender) setGender(storedGender);
-      }catch{
+        // Update state with the retrieved data, the if make sure that there is an actual value there, and then updates
+        if (storedHeight) setHeight(storedHeight);
+        if (storedAge) setAge(storedAge);
+        if (storedWeight) setWeight(storedWeight);
+        if (storedActivity) setActivityLevel(storedActivity);
+        if (storedGoal) setGoal(storedGoal);
+        if (storedGender) setGender(storedGender);
+      } catch {
         console.error('Error retrieving data: ', error);
       }
     };
 
     const retrievingData = async () => {
       const burntCalories = await retrieveData('burntCalories');
-      if(burntCalories) setburntCalories(parseInt(burntCalories, 10))
-      else setburntCalories(0);//here
+      if (burntCalories) setburntCalories(parseInt(burntCalories, 10));
+      else setburntCalories(0); //here
     };
 
     const caloryGoal = async () => {
-      await saveData('target', String(calorieGoal))
-      console.log('try')
-      console.log(String(calorieGoal))
-      const num = await retrieveData('target')
-      console.log('re')
-      console.log(num)
-      console.log(parseInt(num, 10))
-    }
+      await saveData('target', String(calorieGoal));
+    };
     const intervalId = setInterval(() => {
       retrievingData();
       retrieve();
       caloryGoal();
     }, 5000);
 
-    await saveData('burntCalories', 0)
-    await saveData('totalCalories', 0)
+    await saveData('burntCalories', 0);
+    await saveData('totalCalories', 0);
 
     retrievingData();
     retrieve();
@@ -159,7 +143,6 @@ const StatsScreen = ({route, navigation}) => {
 
   return (
     <SafeAreaView style={styles.safeContainer}>
-    
       <ScrollView style={styles.container}>
         <DailyCaloriesSummary
           goal={calorieGoal.toFixed(0)}
@@ -189,13 +172,7 @@ const StatsScreen = ({route, navigation}) => {
           onAddMeal={addMeal}
           onClose={() => setModalVisible(false)}
         />
-        <TouchableOpacity
-          onPress={navigateToHome}
-          style={styles.navigateToHomeButton}>
-          <Text style={styles.navigateToHomeButtonText}>Go to Home Screen</Text>
-        </TouchableOpacity>
       </ScrollView>
-              
     </SafeAreaView>
   );
 };
@@ -245,17 +222,6 @@ const styles = StyleSheet.create({
   addButtonText: {
     fontWeight: 'bold',
     color: '#000',
-  },
-  navigateToHomeButton: {
-    backgroundColor: '#10ac84',
-    padding: 15,
-    borderRadius: 5,
-    alignItems: 'center',
-    margin: 15,
-  },
-  navigateToHomeButtonText: {
-    color: '#000',
-    fontWeight: 'bold',
   },
 });
 
