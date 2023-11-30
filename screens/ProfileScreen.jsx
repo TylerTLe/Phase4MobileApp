@@ -17,12 +17,10 @@ const ProfileScreen = ({navigation}) => {
 
   const [age, setAge] = useState('');
   const [height, setHeight] = useState('');
-  const [weight, setWeight] = useState('');
+  var [weight, setWeight] = useState('');
   const [gender, setGender] = useState('male');
   const [activityLevel, setActivityLevel] = useState('sedentary');
-  const [goal, setGoal] = useState('lose_weight');
-
-
+  const [goal, setGoal] = useState('lose_weight')
   const validateInput = () => {
     if (!age || !height || !weight) {
       Alert.alert('Error', 'Please fill in all fields.');
@@ -41,9 +39,9 @@ const ProfileScreen = ({navigation}) => {
       const storedGender = await retrieveData('gender');
 
       // Update state with the retrieved data, the if make sure that there is an actual value there, and then updates
-      if (storedHeight) setHeight(parseInt(storedHeight, 10));
-      if (storedAge) setAge(parseInt(storedAge, 10));
-      if (storedWeight) setWeight(parseInt(storedWeight, 10));
+      if (storedHeight) setHeight(storedHeight);
+      if (storedAge) setAge(storedAge);
+      if (storedWeight) setWeight(storedWeight);
       if (storedActivity) setActivityLevel(storedActivity);
       if (storedGoal) setGoal(storedGoal);
       if (storedGender) setGender(storedGender);
@@ -51,14 +49,41 @@ const ProfileScreen = ({navigation}) => {
         console.error('Error retrieving data: ', error);
       }
     };
+    //Every 5 secounds, it will try to save age height and weight
+    const intervalId = setInterval(() => {
+      saveAge();
+      saveHeight()
+      saveWeight();
+    }, 5000);
   
     retrieve()
+
+    return () => clearInterval(intervalId);
   }, []);
 
-  const saveAge = (age) => {
-    saveData('age', age)
-
-
+  const saveAge = () => {
+    saveData('age', String(age))
+    //setAge(age)
+  }
+  const saveHeight = () => {
+    saveData('height', String(height))
+    //setHeight(height)
+  }
+  const saveWeight = () => {
+    saveData('weight', String(weight))
+    //setWeight(weight)
+  }
+  const saveGender = (input) => {
+    saveData('gender', String(input))
+    setGender(input)
+  }
+  const saveActivityLevel = (input) => {
+    saveData('activity', String(input))
+    setActivityLevel(input)
+  }
+  const saveGoal = (input) => {
+    saveData('goal', String(input))
+    setGoal(input)
   }
 
   const calculateCalories = () => {
@@ -155,7 +180,7 @@ const ProfileScreen = ({navigation}) => {
       <Picker
         selectedValue={gender}
         style={styles.picker}
-        onValueChange={itemValue => setGender(itemValue)}>
+        onValueChange={itemValue => saveGender(itemValue)}>
         <Picker.Item label="Male" value="male" />
         <Picker.Item label="Female" value="female" />
       </Picker>
@@ -164,7 +189,7 @@ const ProfileScreen = ({navigation}) => {
       <Picker
         selectedValue={activityLevel}
         style={styles.picker}
-        onValueChange={itemValue => setActivityLevel(itemValue)}>
+        onValueChange={itemValue => saveActivityLevel(itemValue)}>
         <Picker.Item label="Sedentary" value="sedentary" />
         <Picker.Item label="Lightly Active" value="lightly_active" />
         <Picker.Item label="Moderately Active" value="moderately_active" />
@@ -176,7 +201,7 @@ const ProfileScreen = ({navigation}) => {
       <Picker
         selectedValue={goal}
         style={styles.picker}
-        onValueChange={itemValue => setGoal(itemValue)}>
+        onValueChange={itemValue => saveGoal(itemValue)}>
         <Picker.Item label="Lose Weight" value="lose_weight" />
         <Picker.Item label="Gain Muscle" value="gain_muscle" />
         <Picker.Item label="Maintain Weight" value="maintain_weight" />
