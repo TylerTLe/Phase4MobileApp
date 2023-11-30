@@ -30,6 +30,5 @@ To use the app
 3. on stats and home page add workouts and meals.
 4. app will automatically update calories on both pages.
 5. if you want to reset data you can go to settings page and reset data. 
-
-6. 
+ 
 
