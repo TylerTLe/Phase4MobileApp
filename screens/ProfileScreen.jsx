@@ -9,105 +9,75 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
-import { saveData, retrieveData } from '../Components/DataViewer';
-import { useEffect } from 'react';
-
+import {saveData, retrieveData} from '../Components/DataViewer';
+import {useEffect} from 'react';
 
 const ProfileScreen = ({navigation}) => {
-
   const [age, setAge] = useState('');
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');
   const [gender, setGender] = useState('male');
   const [activityLevel, setActivityLevel] = useState('sedentary');
-  const [goal, setGoal] = useState('lose_weight')
+  const [goal, setGoal] = useState('lose_weight');
   const validateInput = () => {
     if (!age || !height || !weight) {
       Alert.alert('Error', 'Please fill in all fields.');
       return false;
     }
-  }
+  };
 
-
-  useEffect( () => {
+  useEffect(() => {
     const retrieve = async () => {
-      try{
-      const storedHeight = await retrieveData('height');
-      const storedAge = await retrieveData('age');
-      const storedWeight = await retrieveData('weight');
-      const storedActivity = await retrieveData('activity');
-      const storedGoal = await retrieveData('goal');
-      const storedGender = await retrieveData('gender');
+      try {
+        const storedHeight = await retrieveData('height');
+        const storedAge = await retrieveData('age');
+        const storedWeight = await retrieveData('weight');
+        const storedActivity = await retrieveData('activity');
+        const storedGoal = await retrieveData('goal');
+        const storedGender = await retrieveData('gender');
 
-      // Update state with the retrieved data, the if make sure that there is an actual value there, and then updates
-      if (storedHeight) setHeight(storedHeight);
-      if (storedAge) setAge(storedAge);
-      if (storedWeight) setWeight(storedWeight);
-      if (storedActivity) setActivityLevel(storedActivity);
-      if (storedGoal) setGoal(storedGoal);
-      if (storedGender) setGender(storedGender);
-      }catch{
+        // Update state with the retrieved data, the if make sure that there is an actual value there, and then updates
+        if (storedHeight) setHeight(storedHeight);
+        if (storedAge) setAge(storedAge);
+        if (storedWeight) setWeight(storedWeight);
+        if (storedActivity) setActivityLevel(storedActivity);
+        if (storedGoal) setGoal(storedGoal);
+        if (storedGender) setGender(storedGender);
+      } catch {
         console.error('Error retrieving data: ', error);
       }
     };
 
     const saveAge = () => {
-      saveData('age', age)
-      console.log(age)
+      saveData('age', age);
+      console.log(age);
       //console.log(String(age))
       //setAge(age)
-    }
+    };
     const saveHeight = () => {
-      saveData('height', String(height))
+      saveData('height', String(height));
       //setHeight(height)
-    }
+    };
     const saveWeight = () => {
-      saveData('weight', String(weight))
+      saveData('weight', String(weight));
       //setWeight(weight)
-    }
-
-    //Every 5 secounds, it will try to save age height and weight
-    /*const intervalId = setInterval(() => {
-      saveAge();
-      saveHeight()
-      saveWeight();
-      
-      console.log(retrieveData('weight'))
-      console.log(retrieveData('height'))
-      console.log(retrieveData('age'))
-    }, 5000);
-    */
-    retrieve()
-    console.log(age)
-
-    //return () => clearInterval(intervalId);
+    };
+    retrieve();
+    console.log(age);
   }, []);
 
-  /*const saveAge = () => {
-    saveData('age', String(age))
-    //setAge(age)
-  }
-  const saveHeight = () => {
-    saveData('height', String(height))
-    //setHeight(height)
-  }
-  const saveWeight = () => {
-    saveData('weight', String(weight))
-    //setWeight(weight)
-  }*/
-  const saveGender = (input) => {
-    saveData('gender', String(input))
-    setGender(input)
-  }
-  const saveActivityLevel = (input) => {
-    saveData('activity', String(input))
-    setActivityLevel(input)
-
-  }
-  const saveGoal = (input) => {
-    saveData('goal', String(input))
-    setGoal(input)
-  }
+  const saveGender = input => {
+    saveData('gender', String(input));
+    setGender(input);
+  };
+  const saveActivityLevel = input => {
+    saveData('activity', String(input));
+    setActivityLevel(input);
+  };
+  const saveGoal = input => {
+    saveData('goal', String(input));
+    setGoal(input);
+  };
 
   const calculateCalories = () => {
     // Convert height from cm to meters
@@ -130,7 +100,6 @@ const ProfileScreen = ({navigation}) => {
     } else {
       // Handle other gender options if needed
       bmr = 0; // Placeholder value
-
     }
     if (isNaN(age) || isNaN(height) || isNaN(weight)) {
       Alert.alert('Error', 'Age, height, and weight must be numbers.');
@@ -139,7 +108,6 @@ const ProfileScreen = ({navigation}) => {
     return true;
   };
 
-  
   const handleSubmit = () => {
     if (validateInput()) {
       // Navigate to StatsScreen with the user's profile data
@@ -152,23 +120,14 @@ const ProfileScreen = ({navigation}) => {
         goal: goal,
       });
     }
-  
-
-    //No longer need, flag for termination
     // Display the calculated calories or perform further actions here
     alert(
-      //`Your daily calorie needs: ${calculatedCalories.toFixed(2)} calories`,
-      'Information saved successful'
+      'Information saved successful',
     );
 
-
-    saveData('height', String(height))
-    saveData('weight', String(weight))
-    saveData('age', String(age))
-    //saveData('goal', goal)
-    //saveData('activity', activityLevel)
-    //saveData('gender', gender)
-    //saveData('calories', calculatedCalories)
+    saveData('height', String(height));
+    saveData('weight', String(weight));
+    saveData('age', String(age));
   };
 
   return (

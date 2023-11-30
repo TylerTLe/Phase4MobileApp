@@ -24,11 +24,11 @@ const HomeScreen = () => {
   // Retrieve the data from route parameters or use default values
 
   const [calorieGoal, setCalorieGoal] = useState(2053);
-  // Should I apply the datasaver here as well?
+  // Should I apply the data-saver here as well?
 
   const totalCaloriesIncludingExercise = calorieGoal + exerciseCalories;
 
-  //Use effect may be cauing an error, but is necessary for the function of the program
+  //Use effect may be causing an error, but is necessary for the function of the program
 
   useEffect(async () => {
     const retrievingData = async () => {

@@ -12,23 +12,7 @@ import MealModal from './StatComponents/MealModal';
 
 import {saveData, retrieveData} from '../Components/DataViewer';
 
-const StatsScreen = ({route, navigation}) => {
-  // Default parameters in case route.params is undefined
-  const defaultParams = {
-    gender: 'male',
-    weight: 70,
-    height: 170,
-    age: 25,
-    activityLevel: 'sedentary',
-    goal: 'maintain_weight',
-  };
-
-  // Use parameters from route.params or default parameters
-
-  // Should I apply the datasaver here as well?
-  //const {gender, weight, height, age, activityLevel, goal} =
-  //route.params || defaultParams;
-
+const StatsScreen = ({}) => {
   //Defining values, and still using default
   const [age, setAge] = useState(25);
   const [height, setHeight] = useState(170);
