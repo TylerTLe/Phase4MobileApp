@@ -9,6 +9,7 @@ import {
   Alert
 } from 'react-native';
 import {saveData, retrieveData} from '../../Components/DataViewer';
+import { truncate } from 'fs/promises';
 
 const WorkoutModal = ({isVisible, onSubmit, onClose}) => {
   const [workoutName, setWorkoutName] = useState('');
@@ -19,7 +20,6 @@ const WorkoutModal = ({isVisible, onSubmit, onClose}) => {
     if (workoutName.trim() && workoutCalories.trim()) {
       const calories = parseInt(workoutCalories) || 0;
       onSubmit(workoutName, calories);
-      setModalVisible(false);
       setWorkoutName('');
       setWorkoutCalories('');
       Saving();
